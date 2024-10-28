@@ -1,3 +1,7 @@
+# Qt index
+*.idx
+*.json
+
 # Prerequisites
 *.d
 
