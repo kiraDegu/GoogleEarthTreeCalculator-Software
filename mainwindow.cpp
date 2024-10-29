@@ -6,14 +6,19 @@
 #include <QEnterEvent>
 #include <QToolTip>
 
-HoverLabel::HoverLabel(const QString &text, QWidget *parent)
-    : QLabel(text, parent) {
+HoverLabel::HoverLabel(const QString &text, const QString &message, QWidget *parent)
+    : QLabel(text, parent), message(message) {
 }
 
 void HoverLabel::enterEvent(QEnterEvent *event) {
-    // Controlla se l'evento è di tipo QEnterEvent
+
+    QPoint tooltipPos;
+    tooltipPos.setY(35);
+    tooltipPos.setX(30);
+
     if (event->type() == QEvent::Enter) {
-        QToolTip::showText(QCursor::pos(), "Questo è un tooltip informativo!");
+
+        QToolTip::showText(QCursor::pos() - tooltipPos, message);
     }
     QLabel::enterEvent(event); // Chiama il metodo base
 }
@@ -30,7 +35,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     // Crea e aggiungi la HoverLabel
-    label = new HoverLabel("Origin:", ui->labelLongitude);
+    label = new HoverLabel("Origin:", "Punto di partenza dell'albero", ui->widgetOrigin);
+    label = new HoverLabel("Heading (0 to 360):", "Rotazione dell'albero" , ui->widgetHeading);
+    label = new HoverLabel("Distance (NM):", "Distanza tra punti" , ui->widgetDistance);
+    label = new HoverLabel("MSL (m):", "Altitudine" , ui->widgetMsl);
+    label = new HoverLabel("Select Earth Model:", "Modello di calcolo" , ui->widgetModel);
 
 }
 
@@ -40,7 +49,7 @@ MainWindow::~MainWindow(){
 
 void MainWindow::on_calculateButton_clicked(){
 
-
+    UserInput();
 }
 
 void MainWindow::UserInput(){

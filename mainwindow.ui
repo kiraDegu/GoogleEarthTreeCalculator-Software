@@ -6,119 +6,267 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>543</height>
+    <width>457</width>
+    <height>468</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>500</width>
+    <height>500</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>Coordinate Calculator</string>
+   <string>Tree Generator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>1</number>
+    </property>
+    <property name="leftMargin">
+     <number>8</number>
+    </property>
+    <property name="bottomMargin">
+     <number>8</number>
+    </property>
     <item>
-     <widget class="QLabel" name="labelLongitude">
-      <property name="text">
-       <string>Longitude (-180 to 180):</string>
+     <widget class="QWidget" name="widgetOrigin" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>1000000</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QDoubleSpinBox" name="longitudeBox">
-      <property name="minimum">
-       <double>-180.000000000000000</double>
+     <widget class="QWidget" name="widgetLongitude" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-      <property name="maximum">
-       <double>180.000000000000000</double>
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="labelLatitude">
-      <property name="text">
-       <string>Latitude (-90 to 90):</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QDoubleSpinBox" name="latitudeBox">
-      <property name="minimum">
-       <double>-90.000000000000000</double>
-      </property>
-      <property name="maximum">
-       <double>90.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="labelHeading">
-      <property name="text">
-       <string>Heading (0 to 360):</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QDoubleSpinBox" name="headingBox">
-      <property name="maximum">
-       <double>360.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="labelDistance">
-      <property name="text">
-       <string>Distance (NM):</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QDoubleSpinBox" name="distanceBox">
-      <property name="maximum">
-       <double>10000.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>MSL (m):</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QDoubleSpinBox" name="mslBox">
-      <property name="maximum">
-       <double>10000.000000000000000</double>
-      </property>
-      <property name="value">
-       <double>5000.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="labelModel">
-      <property name="text">
-       <string>Select Earth Model:</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QComboBox" name="modelInput">
-      <item>
-       <property name="text">
-        <string>Flat Earth</string>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>151</width>
+         <height>20</height>
+        </rect>
        </property>
-      </item>
-      <item>
        <property name="text">
-        <string>Spherical Earth</string>
+        <string>Longitude (-180 to 180):</string>
        </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>WGS84</string>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
        </property>
-      </item>
+      </widget>
+      <widget class="QDoubleSpinBox" name="longitudeBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>20</y>
+         <width>438</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <double>-180.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>180.000000000000000</double>
+       </property>
+      </widget>
      </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widgetLatitude" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>181</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Latitude (-90 to 90):</string>
+       </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="latitudeBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>20</y>
+         <width>438</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <double>-90.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>90.000000000000000</double>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widgetHeading" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <widget class="QDoubleSpinBox" name="headingBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>20</y>
+         <width>438</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="maximum">
+        <double>360.000000000000000</double>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widgetDistance" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <widget class="QDoubleSpinBox" name="distanceBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>20</y>
+         <width>438</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="maximum">
+        <double>10000.000000000000000</double>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widgetMsl" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <widget class="QDoubleSpinBox" name="mslBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>20</y>
+         <width>438</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="maximum">
+        <double>10000.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>5000.000000000000000</double>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widgetModel" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <widget class="QComboBox" name="modelInput">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>20</y>
+         <width>438</width>
+         <height>28</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Flat Earth</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Spherical Earth</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>WGS84</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
     </item>
     <item>
      <widget class="QPushButton" name="calculateButton">
@@ -136,23 +284,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>400</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuTree_Calculator">
-    <property name="title">
-     <string>Tree Calculator</string>
-    </property>
-   </widget>
-   <addaction name="menuTree_Calculator"/>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

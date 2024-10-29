@@ -15,11 +15,13 @@ class HoverLabel : public QLabel {
     Q_OBJECT
 
 public:
-    HoverLabel(const QString &text, QWidget *parent = nullptr);
+    HoverLabel(const QString &text, const QString &message ,QWidget *parent = nullptr);
 
 protected:
     void enterEvent(QEnterEvent *event) override;
     void leaveEvent(QEvent *event) override;
+    QString message;
+
 };
 
 class MainWindow : public QMainWindow
