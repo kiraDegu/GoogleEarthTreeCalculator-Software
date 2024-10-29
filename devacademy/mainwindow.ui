@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>514</height>
+    <height>543</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,23 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="labelLatitude">
-      <property name="text">
-       <string>Latitude (-90 to 90):</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QDoubleSpinBox" name="latitudeBox">
-      <property name="minimum">
-       <double>-90.000000000000000</double>
-      </property>
-      <property name="maximum">
-       <double>90.000000000000000</double>
-      </property>
-     </widget>
-    </item>
     <item>
      <widget class="QLabel" name="labelLongitude">
       <property name="text">
@@ -46,6 +29,23 @@
       </property>
       <property name="maximum">
        <double>180.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelLatitude">
+      <property name="text">
+       <string>Latitude (-90 to 90):</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDoubleSpinBox" name="latitudeBox">
+      <property name="minimum">
+       <double>-90.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>90.000000000000000</double>
       </property>
      </widget>
     </item>
