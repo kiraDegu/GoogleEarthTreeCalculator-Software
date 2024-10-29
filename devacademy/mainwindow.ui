@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>514</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Coordinate Calculator</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="labelLatitude">
+      <property name="text">
+       <string>Latitude (-90 to 90):</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDoubleSpinBox" name="latitudeBox">
+      <property name="minimum">
+       <double>-90.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>90.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelLongitude">
+      <property name="text">
+       <string>Longitude (-180 to 180):</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDoubleSpinBox" name="longitudeBox">
+      <property name="minimum">
+       <double>-180.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>180.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelHeading">
+      <property name="text">
+       <string>Heading (0 to 360):</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDoubleSpinBox" name="headingBox">
+      <property name="maximum">
+       <double>360.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelDistance">
+      <property name="text">
+       <string>Distance (NM):</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDoubleSpinBox" name="distanceBox">
+      <property name="maximum">
+       <double>10000.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>MSL (m):</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDoubleSpinBox" name="mslBox">
+      <property name="maximum">
+       <double>10000.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>5000.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelModel">
+      <property name="text">
+       <string>Select Earth Model:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="modelInput">
+      <item>
+       <property name="text">
+        <string>Flat Earth</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Spherical Earth</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>WGS84</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="calculateButton">
+      <property name="text">
+       <string>Calculate</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="onWebButton">
+      <property name="text">
+       <string>Open Google Earth</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>400</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuTree_Calculator">
+    <property name="title">
+     <string>Tree Calculator</string>
+    </property>
+   </widget>
+   <addaction name="menuTree_Calculator"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
