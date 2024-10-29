@@ -1,19 +1,24 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "TypeTraits.hpp"
+#include "Manager.hpp"
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QEnterEvent>
 #include <QToolTip>
 
-HoverLabel::HoverLabel(const QString &text, QWidget *parent)
-    : QLabel(text, parent) {
+HoverLabel::HoverLabel(const QString &text, const QString &message, QWidget *parent)
+    : QLabel(text, parent), message(message) {
 }
 
 void HoverLabel::enterEvent(QEnterEvent *event) {
-    // Controlla se l'evento è di tipo QEnterEvent
+
+    QPoint tooltipPos;
+    tooltipPos.setY(35);
+    tooltipPos.setX(30);
+
     if (event->type() == QEvent::Enter) {
-        QToolTip::showText(QCursor::pos(), "Questo è un tooltip informativo!");
+
+        QToolTip::showText(QCursor::pos() - tooltipPos, message);
     }
     QLabel::enterEvent(event); // Chiama il metodo base
 }
@@ -30,7 +35,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     // Crea e aggiungi la HoverLabel
-    label = new HoverLabel("Origin:", ui->labelLongitude);
+    label = new HoverLabel("Origin:", "Punto di partenza dell'albero", ui->widgetOrigin);
+    label = new HoverLabel("Heading (0 to 360):", "Rotazione dell'albero" , ui->widgetHeading);
+    label = new HoverLabel("Distance (NM):", "Distanza tra punti" , ui->widgetDistance);
+    label = new HoverLabel("MSL (m):", "Altitudine" , ui->widgetMsl);
+    label = new HoverLabel("Select Earth Model:", "Modello di calcolo" , ui->widgetModel);
 
 }
 
@@ -40,17 +49,36 @@ MainWindow::~MainWindow(){
 
 void MainWindow::on_calculateButton_clicked(){
 
-
+    UserInput();
 }
 
 void MainWindow::UserInput(){
-    Type::Scalar latitude = ui->latitudeBox->text().toDouble();
-    Type::Scalar longitude = ui->longitudeBox->text().toDouble();
-    Type::Scalar heading = ui->headingBox->text().toDouble();
-    Type::Scalar distance = ui->distanceBox->text().toDouble();
-    Type::Scalar msl = ui->mslBox->text().toDouble();
-    Type::Model model = ui->modelInput->currentIndex();
+    const Type::Scalar latitude = ui->latitudeBox->text().toDouble();
+    const Type::Scalar longitude = ui->longitudeBox->text().toDouble();
+    const Type::Scalar heading = ui->headingBox->text().toDouble();
+    const Type::Scalar distance = ui->distanceBox->text().toDouble();
+    const Type::Scalar msl = ui->mslBox->text().toDouble();
+    const Type::Model model = ui->modelInput->currentIndex();
 
+    static const Type::PathSpec pathSpec = {
+        {1.0, 0.0},
+        {1.0, 90.0},
+        {std::sqrt(2.0), 45.0},
+        {std::sqrt(5.0), 63.435},
+        {std::sqrt(5.0), 26.565},
+        {2.0 * std::sqrt(2.0), 45.0},
+        {std::sqrt(12.5), 8.13},
+        {std::sqrt(5.0), -26.565},
+        {2.0, 0.0},
+        {std::sqrt(2.0), -45.0},
+        {1.0, 0.0},
+        {0.0, 0.0}
+    };
+    PathCalculatorManager manager(pathSpec);
+
+    const bool success = manager.genPath(latitude,longitude,distance,heading,msl,model);
+
+    if(success)
     displayResults();
 }
 

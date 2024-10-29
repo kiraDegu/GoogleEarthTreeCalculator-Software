@@ -21,7 +21,7 @@ class AbstractPathCalculator {
     protected:
         Data _data;
 
-        Type::Path&& _initOutput(const Type::PathSpec&) const;
+        Type::Path _initOutput(const Type::PathSpec&) const;
 };
 
 // Path calculator according to flat earth model

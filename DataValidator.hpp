@@ -1,21 +1,23 @@
-#include "TypeTraits.hpp"
+#ifndef _ACADEMY_DATAVALIDATOR_HPP_
+#define _ACADEMY_DATAVALIDATOR_HPP_
 
+#include "TypeTraits.hpp"
 
 class DataValidator {
 
     private:
 
     // Constants for validation limits
-    static const Type::Scalar distanceMax = 0.5; 
-    static const Type::Scalar distanceMin = 0.0; 
-    static const Type::Scalar longitudeMax = 180.0;
-    static const Type::Scalar longitudeMin = -180.0;
-    static const Type::Scalar latitudeMax = 90.0; 
-    static const Type::Scalar latitudeMin = -90.0; 
-    static const Type::Scalar headingMax = 360.0; 
-    static const Type::Scalar headingMin = 0.0; 
-    static const Type::Scalar heightMax = 1500.0; // Example maximum height in meters
-    static const Type::Scalar heightMin = 0.0; 
+    static constexpr Type::Scalar distanceMax = 0.5;
+    static constexpr Type::Scalar distanceMin = 0.0;
+    static constexpr Type::Scalar longitudeMax = 180.0;
+    static constexpr Type::Scalar longitudeMin = -180.0;
+    static constexpr Type::Scalar latitudeMax = 90.0;
+    static constexpr Type::Scalar latitudeMin = -90.0;
+    static constexpr Type::Scalar headingMax = 360.0;
+    static constexpr Type::Scalar headingMin = 0.0;
+    static constexpr Type::Scalar heightMax = 1500.0; // Example maximum height in meters
+    static constexpr Type::Scalar heightMin = 0.0;
 
     public:
 
@@ -45,3 +47,5 @@ class DataValidator {
     }
 
 };
+
+#endif // _ACADEMY_DATAVALIDATOR_HPP_

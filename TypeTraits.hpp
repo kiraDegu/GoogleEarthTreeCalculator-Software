@@ -1,7 +1,6 @@
 #ifndef _ACADEMY_TYPETRAITS_HPP_
 #define _ACADEMY_TYPETRAITS_HPP_
 
-#include <array>
 #include <vector>
 #include <string>
 #include <utility>
@@ -17,8 +16,8 @@ struct Type {
 
     // Point type alias
     struct Point {
-        Scalar longi; // longitude [deg]
         Scalar lati;  // latitude  [deg]
+        Scalar longi; // longitude [deg]
         Scalar alti;  // altitude  [m]
     };
 
