@@ -3,23 +3,25 @@
 #include "TypeTraits.h"
 #include <QMessageBox>
 #include <QDesktopServices>
-#include<QEnterEvent>
+#include <QEnterEvent>
+#include <QToolTip>
 
 HoverLabel::HoverLabel(const QString &text, QWidget *parent)
     : QLabel(text, parent) {
-    setStyleSheet("background-color: lightgray;"); // Colore di sfondo per la visibilità
 }
 
 void HoverLabel::enterEvent(QEnterEvent *event) {
     // Controlla se l'evento è di tipo QEnterEvent
     if (event->type() == QEvent::Enter) {
-        QMessageBox::information(this, "Hover Event", "Hai passato il cursore sopra la label!");
+        QToolTip::showText(QCursor::pos(), "Questo è un tooltip informativo!");
     }
     QLabel::enterEvent(event); // Chiama il metodo base
 }
 
 void HoverLabel::leaveEvent(QEvent *event) {
-    QLabel::leaveEvent(event); // Chiama il metodo base
+
+    QToolTip::hideText();
+    QLabel::leaveEvent(event);
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -28,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     // Crea e aggiungi la HoverLabel
-    label = new HoverLabel("Origin:", this->centralWidget());
+    label = new HoverLabel("Origin:", ui->labelLongitude);
 
 }
 
