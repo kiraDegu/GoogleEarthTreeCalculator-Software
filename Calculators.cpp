@@ -1,6 +1,6 @@
 #include <cmath>
 #include "Calculators.hpp"
-#include "utilities.h"
+#include "utilities.hpp"
 
 
 // Common output initializer

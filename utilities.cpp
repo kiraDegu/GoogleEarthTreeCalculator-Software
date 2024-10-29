@@ -1,4 +1,4 @@
-#include "utilities.h"
+#include "utilities.hpp"
 
 namespace math{
     // Function to convert degrees to radians

@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "TypeTraits.h"
+#include "TypeTraits.hpp"
 #include <QMessageBox>
 #include <QDesktopServices>
 #include<QEnterEvent>

@@ -1,6 +1,9 @@
 # Output kml file
 *.kml
 
+# Build files
+build/*
+
 # Qt index
 *.idx
 *.json
@@ -37,3 +40,4 @@
 *.exe
 *.out
 *.app
+*.user
