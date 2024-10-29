@@ -4,12 +4,12 @@
 
 
 // Common output initializer
-Type::Path&& AbstractPathCalculator::_initOutput(const Type::PathSpec& pathSpec) const {
+Type::Path AbstractPathCalculator::_initOutput(const Type::PathSpec& pathSpec) const {
     Type::Path out;
     out.reserve(pathSpec.size()+1);
     out.emplace_back(_data.p0);
 
-    return std::move(out);
+    return out;
 }
 
 // Flat earth model path calculator implementation
@@ -20,8 +20,9 @@ Type::Path FlatEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
 
     for (size_t i = 1; i < pathSpec.size(); ++i) {
         Type::Point p_next = { 
-            _data.p0.lati  + (_data.d * pathSpec[i].first) * cos(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL, 
-            _data.p0.longi + (_data.d * pathSpec[i].first) * sin(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL / cos(math::degreeToRadian(_data.p0.lati))
+            _data.p0.lati  + (_data.d * pathSpec[i].first) * cos(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL,
+            _data.p0.longi + (_data.d * pathSpec[i].first) * sin(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL / cos(math::degreeToRadian(_data.p0.lati)),
+            _data.msl
         }; 
         out.emplace_back(p_next);  
     }

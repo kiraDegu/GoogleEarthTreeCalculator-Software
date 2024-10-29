@@ -1,6 +1,7 @@
 #ifndef _ACADEMY_KMLINTERFACE_HPP_
 #define _ACADEMY_KMLINTERFACE_HPP_
 
+#include <array>
 #include <ostream>
 #include <sstream>
 #include <iomanip>

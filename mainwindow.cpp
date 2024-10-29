@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "TypeTraits.hpp"
+#include "Manager.hpp"
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QEnterEvent>
@@ -53,13 +53,32 @@ void MainWindow::on_calculateButton_clicked(){
 }
 
 void MainWindow::UserInput(){
-    Type::Scalar latitude = ui->latitudeBox->text().toDouble();
-    Type::Scalar longitude = ui->longitudeBox->text().toDouble();
-    Type::Scalar heading = ui->headingBox->text().toDouble();
-    Type::Scalar distance = ui->distanceBox->text().toDouble();
-    Type::Scalar msl = ui->mslBox->text().toDouble();
-    Type::Model model = ui->modelInput->currentIndex();
+    const Type::Scalar latitude = ui->latitudeBox->text().toDouble();
+    const Type::Scalar longitude = ui->longitudeBox->text().toDouble();
+    const Type::Scalar heading = ui->headingBox->text().toDouble();
+    const Type::Scalar distance = ui->distanceBox->text().toDouble();
+    const Type::Scalar msl = ui->mslBox->text().toDouble();
+    const Type::Model model = ui->modelInput->currentIndex();
 
+    static const Type::PathSpec pathSpec = {
+        {1.0, 0.0},
+        {1.0, 90.0},
+        {std::sqrt(2.0), 45.0},
+        {std::sqrt(5.0), 63.435},
+        {std::sqrt(5.0), 26.565},
+        {2.0 * std::sqrt(2.0), 45.0},
+        {std::sqrt(12.5), 8.13},
+        {std::sqrt(5.0), -26.565},
+        {2.0, 0.0},
+        {std::sqrt(2.0), -45.0},
+        {1.0, 0.0},
+        {0.0, 0.0}
+    };
+    PathCalculatorManager manager(pathSpec);
+
+    const bool success = manager.genPath(latitude,longitude,distance,heading,msl,model);
+
+    if(success)
     displayResults();
 }
 
