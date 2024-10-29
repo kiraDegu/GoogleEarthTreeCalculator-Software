@@ -11,7 +11,7 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     Calculators.cpp \
-    #Manager.cpp \
+    Manager.cpp \
     utilities.cpp \
     mainwindow.cpp
 
@@ -19,7 +19,7 @@ HEADERS += \
     TypeTraits.hpp \
     Data.hpp \
     Calculators.hpp \
-    #Manager.hpp \
+    Manager.hpp \
     KmlInterface.hpp \
     Validator.hpp \
     utilities.hpp \
