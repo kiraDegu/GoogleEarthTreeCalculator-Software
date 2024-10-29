@@ -28,6 +28,9 @@ class AbstractPathCalculator {
 class FlatEarthPathCalculator final
 : public AbstractPathCalculator {
     public:
+        // Constructo from data
+        FlatEarthPathCalculator(const Data& data):
+        AbstractPathCalculator(data) {}
 
         // Override evaluation method
         Type::Path eval(const Type::PathSpec&) const override;
@@ -38,6 +41,9 @@ class FlatEarthPathCalculator final
 class SphericalEarthPathCalculator final
 : public AbstractPathCalculator {
     public:
+        // Constructo from data
+        SphericalEarthPathCalculator(const Data& data):
+        AbstractPathCalculator(data) {}
 
         // Override evaluation method
         Type::Path eval(const Type::PathSpec&) const override;
@@ -47,6 +53,9 @@ class SphericalEarthPathCalculator final
 class WGS84PathCalculator final
 : public AbstractPathCalculator {
     public:
+        // Constructo from data
+        WGS84PathCalculator(const Data& data):
+        AbstractPathCalculator(data) {}
 
         // Override evaluation method
         Type::Path eval(const Type::PathSpec&) const override;
