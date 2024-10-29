@@ -21,7 +21,7 @@ HEADERS += \
     Calculators.hpp \
     Manager.hpp \
     KmlInterface.hpp \
-    Validator.hpp \
+    DataValidator.hpp \
     utilities.hpp \
     mainwindow.h
 

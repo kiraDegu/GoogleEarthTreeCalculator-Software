@@ -1,4 +1,4 @@
- #ifndef _ACADEMY_DATAVALIDATOR_HPP_
+#ifndef _ACADEMY_DATAVALIDATOR_HPP_
 #define _ACADEMY_DATAVALIDATOR_HPP_
 
 #include "TypeTraits.hpp"
