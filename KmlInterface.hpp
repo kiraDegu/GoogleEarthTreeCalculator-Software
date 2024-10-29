@@ -8,6 +8,8 @@
 
 class KmlInterface {
     public:
+
+        // Coordinate save precision
         #ifndef COORDPRECISION
         static constexpr unsigned int CP = 13u;
         #else
@@ -31,10 +33,11 @@ class KmlInterface {
         }
 
     private:
-        static std::array<Type::String, 3> _headerLines() {
+        static std::array<Type::String, 4> _headerLines() {
             return {
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
-                "<kml xmlns=\"http://www.opengis.net/kml/2.2\">",
+                "<kml xmlns=\"http://www.opengis.net/kml/2.2\"",
+                "     xmlns:gx=\"http://www.google.com/kml/ext/2.2\">",
                 "  <Document>"
             };
         }
@@ -50,7 +53,7 @@ class KmlInterface {
             // String stream coordinate to set precision
             std::stringstream coordStream;
             coordStream << std::fixed << std::setprecision(CP) 
-                        << point.longi << ", " << point.lati << ", " << point.alti;
+                        << point.longi << "," << point.lati << "," << point.alti;
 
             return coordStream.str();
         }
@@ -71,12 +74,25 @@ class KmlInterface {
         }
 
         static void _addLines(std::ostream& os, const Type::Path& path) {
+            os << "    <Style id=\"redline\">" << std::endl;
+            os << "      <LineStyle>" << std::endl;
+            os << "        <color>ff0000ff</color>" << std::endl;
+            os << "        <width>6</width>" << std::endl;
+            os << "      </LineStyle>" << std::endl;
+            os << "    </Style>" << std::endl;
             os << "    <Placemark>" << std::endl;
             os << "      <name> Computed Path </name>" << std::endl;
+            os << "      <styleUrl>#redline</styleUrl>" << std::endl;
+            os << "      <LineString> " << std::endl;
+            os << "        <altitudeMode> absolute </altitudeMode>" << std::endl;
+            os << "        <extrude> 1 </extrude>" << std::endl;
+            os << "        <tassellate> 1 </tassellate>" << std::endl;
             os << "        <coordinates> " << std::endl;
             for (const auto& point: path)
-                os << _pointCoordinates(point) << std::endl;
+                os << "          " << _pointCoordinates(point) << std::endl;
+            os << "          " << _pointCoordinates(path.front()) << std::endl;
             os << "        </coordinates> " << std::endl;
+            os << "      </LineString> " << std::endl;
             os << "    </Placemark>" << std::endl;
         }
 };
