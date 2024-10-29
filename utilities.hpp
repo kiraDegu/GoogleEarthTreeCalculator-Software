@@ -1,5 +1,5 @@
-#ifndef _ACADEMY_UTILITIES_HPP
-#define _ACADEMY_UTILITIES_HPP
+#ifndef _ACADEMY_UTILITIES_HPP_
+#define _ACADEMY_UTILITIES_HPP_
 
 #include <cmath>
 
@@ -16,4 +16,4 @@ namespace physics {
     extern const double EARTH_RADIUS_NM; // in nautical miles
 }
 
-#endif // _ACDEMY_UTILITIES_H
+#endif // _ACDEMY_UTILITIES_HPP_
