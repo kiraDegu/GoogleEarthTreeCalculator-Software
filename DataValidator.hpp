@@ -1,5 +1,7 @@
-#include "TypeTraits.hpp"
+ #ifndef _ACADEMY_DATAVALIDATOR_HPP_
+#define _ACADEMY_DATAVALIDATOR_HPP_
 
+#include "TypeTraits.hpp"
 
 class DataValidator {
 
@@ -45,3 +47,5 @@ class DataValidator {
     }
 
 };
+
+#endif // _ACADEMY_DATAVALIDATOR_HPP_
