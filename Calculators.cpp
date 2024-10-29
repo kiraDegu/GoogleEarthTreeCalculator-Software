@@ -1,27 +1,31 @@
 #include "Calculators.hpp"
 
-Type::Path&& AbstractPathCalculator::initOutput() const {
+// Common output initializer
+Type::Path&& AbstractPathCalculator::_initOutput(const Type::PathSpec& pathSpec) const {
     Type::Path out;
-    out.reserve(_pathSpec.size()+1);
+    out.reserve(pathSpec.size()+1);
     out.emplace_back(_data.p0);
 
     return std::move(out);
 }
 
-Type::Path FlatEarthPathCalculator::eval() const {
-    Type::Path out{this->initOutput()};
+// Flat earth model path calculator implementation
+Type::Path FlatEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
+    Type::Path out{this->_initOutput(pathSpec)};
 
     return out;
 }
 
-Type::Path SphericalEarthPathCalculator::eval() const {
-    Type::Path out{this->initOutput()};
+// Spherical earth model path calculator implementation
+Type::Path SphericalEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
+    Type::Path out{this->_initOutput(pathSpec)};
 
     return out;
 }
 
-Type::Path WGS84PathCalculator::eval() const {
-    Type::Path out{this->initOutput()};
+// WGS84 model path calculator implementation
+Type::Path WGS84PathCalculator::eval(const Type::PathSpec& pathSpec) const {
+    Type::Path out{this->_initOutput(pathSpec)};
 
     return out;
 }
