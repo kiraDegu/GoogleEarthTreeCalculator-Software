@@ -81,7 +81,7 @@ class KmlInterface {
             @param path Vector of points (see Type::Point) describing a trajectory
         */
         static void _addPoints(std::ostream& os, const Type::Path& path) {
-            static char name{'A'};
+            char name{'A'};
             for (const auto& point: path) {
 
                 // Set point placemark
