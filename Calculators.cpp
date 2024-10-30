@@ -63,7 +63,7 @@ Type::Path WGS84PathCalculator::eval(const Type::PathSpec& pathSpec) const {
 
     Type::Path out{this->_initOutput(pathSpec)};
 
-    for (int i = 1; i < pathSpec.size(); ++i) {
+    for (size_t i = 1; i < pathSpec.size(); ++i) {
         Type::Scalar lat_rad = math::degreeToRadian(_data.p0.lati);
 
         Type::Scalar Azm1 = math::degreeToRadian(_data.th + pathSpec[i].second);
