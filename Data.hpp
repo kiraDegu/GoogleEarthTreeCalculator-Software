@@ -3,19 +3,19 @@
 
 #include "TypeTraits.hpp"
 
-// Input data aggregate
+//! @struct Data @brief Path computation input data aggregate
 struct Data {
-    // Origin point
-    Type::Point  p0  = {0.0, 0.0, 5000.0}; // [deg, deg, m]
+    //! @brief Origin point for path computation
+    Type::Point p0{0.0, 0.0, 5000.0};
 
-    // Distance parameter
-    Type::Scalar d   = {0.0};              // [NM]
+    //! @brief Distance parameter for path computation in nautical miles
+    Type::Scalar d{0.0};
 
-    // Heading angle
-    Type::Scalar th  = {0.0};              // [deg]
+    //! @brief Heading angle for path computation in deg
+    Type::Scalar th{0.0};
 
-    // Altitude measured from Mean Sea Level
-    Type::Scalar msl = 5000.0;             // [m]
+    //! @brief Path altitude measured from Mean Sea Level in meters
+    Type::Scalar msl{5000.0};
 };
 
 #endif // _ACADEMY_DATA_HPP_

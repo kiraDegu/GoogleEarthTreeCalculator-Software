@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef _ACADEMY_MAINWINDOW_HPP_
+#define _ACADEMY_MAINWINDOW_HPP_
 
 #include <QMainWindow>
 #include <QLabel>

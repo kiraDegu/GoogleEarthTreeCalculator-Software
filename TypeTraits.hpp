@@ -5,36 +5,43 @@
 #include <string>
 #include <utility>
 
-// Type alias aggregate
+/*! @struct Type
+    @brief Type alias aggregate containing shortcuts used for path calculations
+*/ 
 struct Type {
 
-    // String type alias
+    //! @brief String type alias
     using String = std::string;
 
-    // Scalar type alias
+    //! @brief Scalar type alias
     using Scalar = double;
 
-    // Point type alias
+    /*! @struct Point
+        @brief Data aggregate representing a point lying on the earth atmosphere
+    */
     struct Point {
-        Scalar lati;  // latitude  [deg]
-        Scalar longi; // longitude [deg]
-        Scalar alti;  // altitude  [m]
+        //! @brief Latitude in deg, acceptable values ranges from -90° to 90° 
+        Scalar lati;
+        //! @brief Longitude in deg, acceptable values ranges from -180° to 180°
+        Scalar longi;
+        //! @brief Altitude in meters evaluated from the Mean Sea Level (MSL)
+        Scalar alti;
     };
 
-    /* Path specifier type alias
-       the definition of a path at fixed altitude requires a pair
-       of data for each path jump segment: 
-                    (jump magnitude, jump direction)
+    /*! @brief Path specifier type alias for a trajectory with a fixed altitude
+        
+        The definition of a trajectory path at fixed altitude requires a pair
+        of data for each path segment: (segment magnitude, segment direction w.r.t north)
     */
     using PathSpec = std::vector<std::pair<Scalar, Scalar>>;
 
-    // Path type alias
+    //! @brief Trajectory path type alias
     using Path = std::vector<Point>;
 
-    /* Calculation model type alias
-       Flat Earth      = 0
-       Spherical Earth = 1
-       WGS84           = 2 */
+    /*! @brief Calculation model type alias
+
+        (0, 1, 2) <-> (Flat Earth, Spherical Earth, WGS84) model
+    */
     using Model = short unsigned int;
 };
 
