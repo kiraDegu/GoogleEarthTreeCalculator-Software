@@ -24,9 +24,12 @@ class KmlInterface {
             @param os Output stream
             @param path Vector of points describing a trajectory (see Type::Point)
         */
-        static void printPath(std::ostream& os, const Type::Path& path) {
+        static void printPath(
+            std::ostream& os, const Type::Path& path,
+            const Type::String& docName="Path Name"
+        ) {
             // Print header
-            for (const auto& hline: _headerLines())
+            for (const auto& hline: _headerLines(docName))
                 os << hline << std::endl;
 
             // Print point placemarks
@@ -45,12 +48,13 @@ class KmlInterface {
         /*! @brief Private method to get KML document header lines
             @return An array of four line strings of type Type::String
         */
-        static std::array<Type::String, 4> _headerLines() {
+        static std::array<Type::String, 5> _headerLines(const Type::String& docName) {
             return {
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
                 "<kml xmlns=\"http://www.opengis.net/kml/2.2\"",
                 "     xmlns:gx=\"http://www.google.com/kml/ext/2.2\">",
-                "  <Document>"
+                "  <Document>",
+                Type::String("  <name>") + docName + " </name>"
             };
         }
 
