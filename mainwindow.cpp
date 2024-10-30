@@ -8,14 +8,13 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , _ui(new Ui::MainWindow)
-{
+    , _ui(new Ui::MainWindow){
     _ui->setupUi(this);
-    _label = new HoverLabel("Origin:", "Starting point(Longitude,Latitude) of tree's creation.", _ui->widgetOrigin);
-    _label = new HoverLabel("Heading (0 to 360):", "Tree rotation." , _ui->widgetHeading);
-    _label = new HoverLabel("Distance (NM):", "Distance between generation points." , _ui->widgetDistance);
-    _label = new HoverLabel("MSL (m):", "Altitude above sea level." , _ui->widgetMsl);
-    _label = new HoverLabel("Select Earth Model:", "Calculation Model." , _ui->widgetModel);
+    _labelOrigin = new HoverLabel("Origin:", "Starting point(Longitude,Latitude) of tree's creation.", _ui->widgetOrigin);
+    _labelHeading = new HoverLabel("Heading (0 to 360):", "Tree rotation." , _ui->widgetHeading);
+    _labelDistance = new HoverLabel("Distance (NM):", "Distance between generation points." , _ui->widgetDistance);
+    _labelMsl = new HoverLabel("MSL (m):", "Altitude above sea level." , _ui->widgetMsl);
+    _labelModel = new HoverLabel("Select Earth Model:", "Calculation Model." , _ui->widgetModel);
 }
 
 MainWindow::~MainWindow(){
@@ -62,8 +61,7 @@ void MainWindow::_displayResults() {
     QMessageBox::information(this, "Success", "Coordinates calculated and saved in the KML file.");
 }
 
-void MainWindow::on_onWebButton_clicked()
-{
+void MainWindow::on_onWebButton_clicked(){
     QString htmlFilePath = "https://earth.google.com/web";
     QDesktopServices::openUrl(QUrl(htmlFilePath));
 }

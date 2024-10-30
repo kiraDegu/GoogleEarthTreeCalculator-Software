@@ -11,8 +11,7 @@ class MainWindow;
 QT_END_NAMESPACE
 
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow{
     Q_OBJECT
 
 public:
@@ -25,7 +24,11 @@ private slots:
 
 private:
     Ui::MainWindow *_ui;
-    HoverLabel *_label;
+    HoverLabel *_labelOrigin;
+    HoverLabel *_labelHeading;
+    HoverLabel *_labelDistance;
+    HoverLabel *_labelMsl;
+    HoverLabel *_labelModel;
     void _fromUserInputToOutput();
     void _displayResults();
 };
