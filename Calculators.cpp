@@ -113,5 +113,6 @@ Type::Path WGS84PathCalculator::eval(const Type::PathSpec& pathSpec) const {
 
         out.emplace_back(nextPonit);
     }
+    
     return out;
 }
