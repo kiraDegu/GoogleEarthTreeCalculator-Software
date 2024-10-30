@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "MainWindow.hpp"
+#include "ui_MainWindow.h"
 #include "Manager.hpp"
 #include <QMessageBox>
 #include <QDesktopServices>
@@ -53,12 +53,6 @@ void MainWindow::on_calculateButton_clicked(){
 }
 
 void MainWindow::UserInput(){
-    const Type::Scalar latitude = ui->latitudeBox->text().toDouble();
-    const Type::Scalar longitude = ui->longitudeBox->text().toDouble();
-    const Type::Scalar heading = ui->headingBox->text().toDouble();
-    const Type::Scalar distance = ui->distanceBox->text().toDouble();
-    const Type::Scalar msl = ui->mslBox->text().toDouble();
-    const Type::Model model = ui->modelInput->currentIndex();
 
     static const Type::PathSpec pathSpec = {
         {1.0, 0.0},
@@ -76,10 +70,17 @@ void MainWindow::UserInput(){
     };
     PathCalculatorManager manager(pathSpec);
 
-    const bool success = manager.genPath(latitude,longitude,distance,heading,msl,model);
+    const bool success = manager.genPath(
+        ui->latitudeBox->text().toDouble(),
+        ui->longitudeBox->text().toDouble(),
+        ui->headingBox->text().toDouble(),
+        ui->distanceBox->text().toDouble(),
+        ui->mslBox->text().toDouble(),
+        ui->modelInput->currentIndex()
+    );
 
     if(success)
-    displayResults();
+        displayResults();
 }
 
 void MainWindow::displayResults() {

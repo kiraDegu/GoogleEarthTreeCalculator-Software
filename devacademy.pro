@@ -12,8 +12,8 @@ SOURCES += \
     main.cpp \
     Calculators.cpp \
     Manager.cpp \
-    utilities.cpp \
-    mainwindow.cpp
+    Utilities.cpp \
+    MainWindow.cpp
 
 HEADERS += \
     TypeTraits.hpp \
@@ -22,11 +22,11 @@ HEADERS += \
     Manager.hpp \
     KmlInterface.hpp \
     DataValidator.hpp \
-    utilities.hpp \
-    mainwindow.h
+    Utilities.hpp \
+    MainWindow.hpp
 
 FORMS += \
-    mainwindow.ui
+    MainWindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

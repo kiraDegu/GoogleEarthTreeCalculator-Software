@@ -7,16 +7,23 @@
 #include <iomanip>
 #include "TypeTraits.hpp"
 
+/*! @class KmlInterface
+    @brief Static class for KML file output, the public interface provides a class method for printing a Type::Path into a KML files.
+*/
 class KmlInterface {
     public:
 
-        // Coordinate save precision
         #ifndef COORDPRECISION
-        static constexpr unsigned int CP = 13u;
+        //! @brief Coordinate Precision, can be changed at compile time
+        static constexpr unsigned int CP = 8u;
         #else
         static constexpr unsigned int CP = COORDPRECISION;
         #endif
 
+        /*! @brief Function to save a point path (a vector of points) into an output stream.
+            @param os Output stream
+            @param path Vector of points describing a trajectory (see Type::Point)
+        */
         static void printPath(std::ostream& os, const Type::Path& path) {
             // Print header
             for (const auto& hline: _headerLines())
@@ -34,6 +41,10 @@ class KmlInterface {
         }
 
     private:
+
+        /*! @brief Private method to get KML document header lines
+            @return An array of four line strings of type Type::String
+        */
         static std::array<Type::String, 4> _headerLines() {
             return {
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
@@ -43,6 +54,9 @@ class KmlInterface {
             };
         }
 
+        /*! @brief Private method to get KML document missing lines at the end of file
+            @return An array of two line strings of type Type::String
+        */
         static std::array<Type::String, 2> _endOfFile() {
             return {
                 "  </Document>",
@@ -50,6 +64,9 @@ class KmlInterface {
             };
         }
 
+        /*! @brief Private method to format a Type::Point into a string suitable for KML point format.
+            @return A formatted string for KML point coordinates
+        */
         static Type::String _pointCoordinates(const Type::Point& point) {
             // String stream coordinate to set precision
             std::stringstream coordStream;
@@ -59,6 +76,10 @@ class KmlInterface {
             return coordStream.str();
         }
 
+        /*! @brief Private method to print a KML Point list into an output stream
+            @param os Output stream
+            @param path Vector of points (see Type::Point) describing a trajectory
+        */
         static void _addPoints(std::ostream& os, const Type::Path& path) {
             static char name{'A'};
             for (const auto& point: path) {
@@ -74,6 +95,10 @@ class KmlInterface {
             }
         }
 
+        /*! @brief Private method to print a KML LineString into an output stream
+            @param os Output stream
+            @param path Vector of points (see Type::Point) describing a trajectory
+        */
         static void _addLines(std::ostream& os, const Type::Path& path) {
             os << "    <Style id=\"redline\">" << std::endl;
             os << "      <LineStyle>" << std::endl;

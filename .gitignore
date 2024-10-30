@@ -1,3 +1,7 @@
+# Documentation
+doc/latex/*
+doc/html/*
+
 # Output kml file
 *.kml
 

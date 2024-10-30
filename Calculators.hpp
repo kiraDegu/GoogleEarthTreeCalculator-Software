@@ -3,61 +3,99 @@
 
 #include "Data.hpp"
 
-// Path calculator abstract interface class
+/*! @class AbstractPathCalculator
+    @brief Path calculator abstract interface class
+*/
 class AbstractPathCalculator {
     public:
-        // Disable default constructor because no data setters are implemented
+        //! @brief Disable default constructor because no data setters are implemented
         AbstractPathCalculator()=delete;
 
-        // Construct from input data aggregate
+        /*! @brief Construct from input data aggregate
+            @param data An input data aggregate, see Data
+        */
         AbstractPathCalculator(const Data& data): _data{data} {}
 
-        // Virtual destructor avoids double free
+        //! @brief Virtual destructor avoids double free due to polymorphism
         virtual ~AbstractPathCalculator() {}
 
-        // Evaluate points
-        virtual Type::Path eval(const Type::PathSpec&) const = 0;
+        /*! @brief Pure abstract method to evaluate trajectory path for a given path specifier, overridden in concrete classes
+            @param pathSpec Path specifier of type Type::PathSpec, defines the shape of the path to be computed
+            @return The path evaluated according to a given computational model
+        */
+        virtual Type::Path eval(const Type::PathSpec& pathSpec) const = 0;
 
     protected:
+        //! @brief Save computation algorithm input data aggregate  
         Data _data;
 
+        /*! @brief Private method to initialize trajectory path for a given path specifier
+            @param pathSpec Path specifier of type Type::PathSpec, defines the shape of the path to be computed
+            @return The initialized path 
+        */
         Type::Path _initOutput(const Type::PathSpec&) const;
 };
 
-// Path calculator according to flat earth model
+
+/*! @class FlatEarthPathCalculator
+    @brief Concrete path calculator class applying flat earth model
+*/
 class FlatEarthPathCalculator final
 : public AbstractPathCalculator {
     public:
-        // Constructo from data
+        //! @brief Disable default constructor 
+        FlatEarthPathCalculator()=delete;
+
+        //! @brief Construct from input data aggregate
         FlatEarthPathCalculator(const Data& data):
         AbstractPathCalculator(data) {}
 
-        // Override evaluation method
+        /*! @brief Flat earth model override of the path evaluation method
+            @param pathSpec Path specifier of type Type::PathSpec, defines the shape of the path to be computed
+            @return The path evaluated according to flat earth model
+        */
         Type::Path eval(const Type::PathSpec&) const override;
 };
 
 
-// Path calculator according to spherical earth model
+/*! @class SphericalEarthPathCalculator
+    @brief Concrete path calculator class applying spherical earth model
+*/
 class SphericalEarthPathCalculator final
 : public AbstractPathCalculator {
     public:
-        // Constructo from data
+        //! @brief Disable default constructor 
+        SphericalEarthPathCalculator()=delete;
+
+        //! @brief Construct from input data aggregate
         SphericalEarthPathCalculator(const Data& data):
         AbstractPathCalculator(data) {}
 
-        // Override evaluation method
+        /*! @brief Spherical earth model override of the path evaluation method
+            @param pathSpec Path specifier of type Type::PathSpec, defines the shape of the path to be computed
+            @return The path evaluated according to flat spherical model
+        */
         Type::Path eval(const Type::PathSpec&) const override;
 };
 
-// Path calculator according to WGS84 model
+
+/*! @class WGS84PathCalculator
+    @brief Concrete path calculator class applying WGS84 earth model
+*/
 class WGS84PathCalculator final
 : public AbstractPathCalculator {
     public:
-        // Constructo from data
+        //! @brief Disable default constructor 
+        WGS84PathCalculator()=delete;
+
+        //! @brief Construct from input data aggregate
         WGS84PathCalculator(const Data& data):
         AbstractPathCalculator(data) {}
 
-        // Override evaluation method
+        /*! @brief WGS84 earth model override of the path evaluation method
+            @param pathSpec Path specifier of type Type::PathSpec, defines the shape of the path to be computed
+            @return The path evaluated according to WGS84 earth model
+        */
         Type::Path eval(const Type::PathSpec&) const override;
 };
 
