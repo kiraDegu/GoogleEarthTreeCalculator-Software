@@ -24,7 +24,7 @@ namespace physics {
 
         This value is an average that takes into account the variations in radius based on the equator and the poles.
     */
-    constexpr Type::Scalar EARTH_RADIUS_NM = 3440.065; 
+    constexpr Type::Scalar EARTH_RADIUS_NM = 6371.0 * 0.5399568; 
 
 }
 

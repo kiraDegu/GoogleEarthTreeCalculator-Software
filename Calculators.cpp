@@ -35,15 +35,15 @@ Type::Path SphericalEarthPathCalculator::eval(const Type::PathSpec& pathSpec) co
     Type::Path out{this->_initOutput(pathSpec)};
 
     for (size_t i = 1; i < pathSpec.size(); ++i) {
-        double hav_rad = _data.d * pathSpec[i].first / physics::EARTH_RADIUS_NM;
-        double theta_rad = math::degreeToRadian((_data.th + pathSpec[i].second));
-        double lat_rad = math::degreeToRadian(_data.p0.lati) ;
+        Type::Scalar hav_rad = _data.d * pathSpec[i].first / physics::EARTH_RADIUS_NM;
+        Type::Scalar theta_rad = math::degreeToRadian((_data.th + pathSpec[i].second));
+        Type::Scalar lat_rad = math::degreeToRadian(_data.p0.lati) ;
 
         Type::Point nextPonit;
 
-        nextPonit.lati = math::radianToDegree((sin(lat_rad) * cos(hav_rad) + cos(lat_rad) * sin(hav_rad) * cos(theta_rad))) ;
-        nextPonit.longi = _data.p0.lati + math::radianToDegree((sin(theta_rad) * sin(hav_rad) * cos(lat_rad),
-                                            cos(hav_rad) - sin(lat_rad) * sin(math::degreeToRadian(nextPonit.lati))));
+        nextPonit.lati = math::radianToDegree(asin(sin(lat_rad) * cos(hav_rad) + cos(lat_rad) * sin(hav_rad) * cos(theta_rad))) ;
+        nextPonit.longi = _data.p0.longi + math::radianToDegree(atan2(sin(theta_rad) * sin(hav_rad) * cos(lat_rad) ,
+                                                                        cos(hav_rad) - sin(lat_rad) * sin(math::degreeToRadian(nextPonit.lati))));
         out.emplace_back(nextPonit);
     }
 
