@@ -60,11 +60,10 @@ Type::Path WGS84PathCalculator::eval(const Type::PathSpec& pathSpec) const {
     const Type::Scalar f = 1.0 / 298.257223563;  // Appiattimento dell'ellissoide
     const Type::Scalar b = (1.0 - f) * a;        // Raggio polare in NM
     const Type::Scalar SigThreshold = 1.0E-9;    // Soglia per la convergenza
-    const Type::Scalar Pi = 3.141592653589793;
 
     Type::Path out{this->_initOutput(pathSpec)};
 
-    for (int i = 1; pathSpec.size(); ++i) {
+    for (int i = 1; i < pathSpec.size(); ++i) {
         Type::Scalar lat_rad = math::degreeToRadian(_data.p0.lati);
 
         Type::Scalar Azm1 = math::degreeToRadian(_data.th + pathSpec[i].second);
@@ -92,7 +91,7 @@ Type::Path WGS84PathCalculator::eval(const Type::PathSpec& pathSpec) const {
                                                                               - (1.0 / 6.0) * BB * cos(SigM2) * (-3.0 + 4.0 * sin(Sigma) * sin(Sigma)) * (-3.0 + 4.0 * cos(SigM2) * cos(SigM2))));
             Sigma += DeltaSig;
             Iter++;
-        } while (abs(DeltaSig) > SigThreshold && Iter < 1000);
+        } while (std::abs(DeltaSig) > SigThreshold && Iter < 1000);
 
         Type::Point nextPonit;
 
@@ -114,4 +113,5 @@ Type::Path WGS84PathCalculator::eval(const Type::PathSpec& pathSpec) const {
 
         out.emplace_back(nextPonit);
     }
+    return out;
 }
