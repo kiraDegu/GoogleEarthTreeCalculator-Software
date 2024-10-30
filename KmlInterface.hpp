@@ -105,24 +105,32 @@ class KmlInterface {
         */
         static void _addLines(std::ostream& os, const Type::Path& path) {
             os << "    <Style id=\"redline\">" << std::endl;
+            os << "      <PolyStyle>" << std::endl;
+            os << "        <color>7f00ff00</color>" << std::endl;
+            os << "        <outline>1</outline>" << std::endl;
+            os << "      </PolyStyle>" << std::endl;
             os << "      <LineStyle>" << std::endl;
             os << "        <color>ff0000ff</color>" << std::endl;
-            os << "        <width>6</width>" << std::endl;
+            os << "        <width>3</width>" << std::endl;
             os << "      </LineStyle>" << std::endl;
             os << "    </Style>" << std::endl;
             os << "    <Placemark>" << std::endl;
             os << "      <name> Computed Path </name>" << std::endl;
             os << "      <styleUrl>#redline</styleUrl>" << std::endl;
-            os << "      <LineString> " << std::endl;
+            os << "      <Polygon> " << std::endl;
             os << "        <altitudeMode> absolute </altitudeMode>" << std::endl;
             os << "        <extrude> 1 </extrude>" << std::endl;
             os << "        <tassellate> 1 </tassellate>" << std::endl;
-            os << "        <coordinates> " << std::endl;
+            os << "        <outerBoundaryIs>" << std::endl;
+            os << "          <LinearRing>" << std::endl;
+            os << "            <coordinates> " << std::endl;
             for (const auto& point: path)
-                os << "          " << _pointCoordinates(point) << std::endl;
-            os << "          " << _pointCoordinates(path.front()) << std::endl;
-            os << "        </coordinates> " << std::endl;
-            os << "      </LineString> " << std::endl;
+                os << "              " << _pointCoordinates(point) << std::endl;
+            os << "              " << _pointCoordinates(path.front()) << std::endl;
+            os << "            </coordinates> " << std::endl;
+            os << "          </LinearRing>" << std::endl;
+            os << "        </outerBoundaryIs>" << std::endl;
+            os << "      </Polygon> " << std::endl;
             os << "    </Placemark>" << std::endl;
         }
 };
