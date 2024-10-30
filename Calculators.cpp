@@ -19,12 +19,14 @@ Type::Path FlatEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
     static const Type::Scalar NM_TO_LL = 0.01662976;
 
     for (size_t i = 1; i < pathSpec.size(); ++i) {
-        Type::Point p_next = { 
+        Type::Point nextPonit = { 
             _data.p0.lati  + (_data.d * pathSpec[i].first) * cos(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL,
             _data.p0.longi + (_data.d * pathSpec[i].first) * sin(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL / cos(math::degreeToRadian(_data.p0.lati)),
             _data.msl
         }; 
-        out.emplace_back(p_next);  
+
+        nextPonit.alti = _data.msl;
+        out.emplace_back(nextPonit);  
     }
 
     return out;
@@ -44,89 +46,72 @@ Type::Path SphericalEarthPathCalculator::eval(const Type::PathSpec& pathSpec) co
         nextPonit.lati = math::radianToDegree(asin(sin(lat_rad) * cos(hav_rad) + cos(lat_rad) * sin(hav_rad) * cos(theta_rad))) ;
         nextPonit.longi = _data.p0.longi + math::radianToDegree(atan2(sin(theta_rad) * sin(hav_rad) * cos(lat_rad) ,
                                                                         cos(hav_rad) - sin(lat_rad) * sin(math::degreeToRadian(nextPonit.lati))));
+
+        nextPonit.alti = _data.msl;
         out.emplace_back(nextPonit);
     }
 
     return out;
 }
 
-// WGS84 model path calculator implementation
+
 Type::Path WGS84PathCalculator::eval(const Type::PathSpec& pathSpec) const {
+    const Type::Scalar a = 6378.137 * 0.5399568; // Raggio equatoriale in NM
+    const Type::Scalar f = 1.0 / 298.257223563;  // Appiattimento dell'ellissoide
+    const Type::Scalar b = (1.0 - f) * a;        // Raggio polare in NM
+    const Type::Scalar SigThreshold = 1.0E-9;    // Soglia per la convergenza
+    const Type::Scalar Pi = 3.141592653589793;
+
     Type::Path out{this->_initOutput(pathSpec)};
 
-    Type::Point p_current = _data.p0;
+    for (int i = 1; pathSpec.size(); ++i) {
+        Type::Scalar lat_rad = math::degreeToRadian(_data.p0.lati);
 
-    for (const auto& step : pathSpec) {
-        double distance = _data.d * step.first; // Distance in nautical miles
-        double bearing = math::degreeToRadian(_data.th + step.second); // Convert bearing to radians
+        Type::Scalar Azm1 = math::degreeToRadian(_data.th + pathSpec[i].second);
 
-        // Vincenty's formulae constants
-        const double a = 6378137.0; // Semi-major axis of the Earth (meters)
-        const double f = 1 / 298.257223563; // Flattening
-        const double b = (1 - f) * a; // Semi-minor axis
+        Type::Scalar U1 = atan((1.0 - f) * tan(lat_rad));
 
-        // 	reduced latitude (latitude on the auxiliary sphere)
-        const double U1 = atan((1 - f) * tan(math::degreeToRadian(p_current.lati)));
-        const double U2 = atan((1 - f) * tan(math::degreeToRadian(p_current.lati))); // Note: should be the new latitude after calculation
-        const double L = math::degreeToRadian(p_current.longi) - bearing; // Difference in longitude
+        Type::Scalar Sigma1 = atan2(tan(U1), cos(Azm1));
 
-        double sinU1 = sin(U1);
-        double cosU1 = cos(U1);
-        double sinU2 = sin(U2);
-        double cosU2 = cos(U2);
+        Type::Scalar Sin_Azm = cos(U1) * sin(Azm1);  
 
-        double lambda = L; // Initialize
-        double lambdaP;
-        double sinLambda, cosLambda, sinSigma, cosSigma, cosSqAlpha, cos2SigmaM, C, sigma;
+        Type::Scalar u_sqr = (1.0 - Sin_Azm * Sin_Azm) * ((a * a - b * b) / (b * b));
 
-        // Iteration to solve for lambda
+        // Calcolo delle serie di espansione A e B
+        Type::Scalar AA = 1.0 + u_sqr / 16384.0 * (4096.0 + u_sqr * (-768.0 + u_sqr * (320.0 - 175.0 * u_sqr)));
+        Type::Scalar BB = u_sqr / 1024.0 * (256.0 + u_sqr * (-128.0 + u_sqr * (74.0 - 47.0 * u_sqr)));
+
+        // Iterazione su Sigma per trovare la distanza lungo il percorso
+        Type::Scalar Sigma = _data.d * pathSpec[i].first / (b * AA);
+        Type::Scalar DeltaSig;
+        Type::Scalar SigM2;
+        int Iter = 0;
         do {
-            sinLambda = sin(lambda);
-            cosLambda = cos(lambda);
-            sinSigma = sqrt((cosU2 * sinLambda) * (cosU2 * sinLambda) +
-                            (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda) *
-                            (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda));
+            SigM2 = 2.0 * Sigma1 + Sigma;
+            DeltaSig = BB * sin(Sigma) * (cos(SigM2) + 0.25 * BB * (cos(Sigma) * (-1.0 + 2.0 * cos(SigM2) * cos(SigM2))
+                                                                              - (1.0 / 6.0) * BB * cos(SigM2) * (-3.0 + 4.0 * sin(Sigma) * sin(Sigma)) * (-3.0 + 4.0 * cos(SigM2) * cos(SigM2))));
+            Sigma += DeltaSig;
+            Iter++;
+        } while (abs(DeltaSig) > SigThreshold && Iter < 1000);
 
-            if (sinSigma == 0) return out; // co-incident points
+        Type::Point nextPonit;
 
-            cosSigma = sinU1 * sinU2 + cosU1 * cosU2 * cosLambda;
-            sigma = atan2(sinSigma, cosSigma);
+        // Calcolo della latitudine del punto finale
+        nextPonit.lati = math::radianToDegree( atan2(sin(U1) * cos(Sigma) + cos(U1) * sin(Sigma) * cos(Azm1),
+                                       (1.0 - f) * sqrt(Sin_Azm * Sin_Azm + pow(sin(U1) * sin(Sigma) - cos(U1) * cos(Sigma) * cos(Azm1), 2))));
 
-            double sinAlpha = cosU1 * cosU2 * sinLambda;
-            cosSqAlpha = 1 - sinAlpha * sinAlpha;
-            cos2SigmaM = cosU2 * cosU1 - 2 * sinU1 * sinU2 * cosLambda;
+        // Calcolo della longitudine del punto finale
+        Type::Scalar Lambda = atan2(sin(Sigma) * sin(Azm1),
+                                   cos(U1) * cos(Sigma) - sin(U1) * sin(Sigma) * cos(Azm1));
 
-            if (cos2SigmaM == 0) cos2SigmaM = 0; // Equatorial line
+        // Correzione per la longitudine utilizzando la serie di espansione C
+        Type::Scalar C = f / 16.0 * (1.0 - Sin_Azm * Sin_Azm) * (4.0 + f * (4.0 - 3.0 * (1.0 - Sin_Azm * Sin_Azm)));
+        Type::Scalar L = Lambda - (1.0 - C) * f * Sin_Azm * (Sigma + C * sin(Sigma) * (cos(SigM2) + C * cos(Sigma) * (-1.0 + 2.0 * cos(SigM2) * cos(SigM2))));
 
-            C = f / 16 * cosSqAlpha * (4 + f * (4 - 3 * cosSqAlpha));
+        nextPonit.longi = _data.p0.longi + math::radianToDegree(L);
 
-            lambdaP = lambda;
-            lambda = L + (1 - C) * f * sinAlpha *
-                     (sigma + C * sinSigma * (cos2SigmaM + C * cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM)));
+        nextPonit.alti = _data.msl;
 
-        } while (fabs(lambda - lambdaP) > 1e-12); // Convergence check
-
-        // Calculate new latitude and longitude
-        double uSq = cosSqAlpha * (a * a - b * b) / (b * b);
-        double A = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
-        double B = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
-
-        double deltaSigma = B * sinSigma * (cos2SigmaM + B / 4 * (cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM) -
-                          B / 6 * cos2SigmaM * (-3 + 4 * sinSigma * sinSigma) *
-                          (-3 + 4 * cos2SigmaM * cos2SigmaM)));
-
-        double s = b * A * (sigma - deltaSigma); // Distance
-
-        // Calculate new latitude and longitude
-        double lat2 = U2 + (cosU2 * sinLambda) / (cosU1 * cosU2) * (distance / (a * (1 - f)));
-        double lon2 = math::degreeToRadian(p_current.longi) + (1 / cosU1) * (distance / (a * (1 - f))) * sinLambda;
-
-        // Update current point
-        p_current.lati = math::radianToDegree(lat2);
-        p_current.longi = math::radianToDegree(lon2);
-
-        out.emplace_back(p_current); // Add the new point to the path
+        out.emplace_back(nextPonit);
     }
-
-    return out;
 }
