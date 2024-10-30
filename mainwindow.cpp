@@ -6,53 +6,30 @@
 #include <QEnterEvent>
 #include <QToolTip>
 
-HoverLabel::HoverLabel(const QString &text, const QString &message, QWidget *parent)
-    : QLabel(text, parent), message(message) {
-}
-
-void HoverLabel::enterEvent(QEnterEvent *event) {
-
-    QPoint tooltipPos;
-    tooltipPos.setY(35);
-    tooltipPos.setX(30);
-
-    if (event->type() == QEvent::Enter) {
-
-        QToolTip::showText(QCursor::pos() - tooltipPos, message);
-    }
-    QLabel::enterEvent(event); // Chiama il metodo base
-}
-
-void HoverLabel::leaveEvent(QEvent *event) {
-
-    QToolTip::hideText();
-    QLabel::leaveEvent(event);
-}
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , _ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-    // Crea e aggiungi la HoverLabel
-    label = new HoverLabel("Origin:", "Punto di partenza dell'albero", ui->widgetOrigin);
-    label = new HoverLabel("Heading (0 to 360):", "Rotazione dell'albero" , ui->widgetHeading);
-    label = new HoverLabel("Distance (NM):", "Distanza tra punti" , ui->widgetDistance);
-    label = new HoverLabel("MSL (m):", "Altitudine" , ui->widgetMsl);
-    label = new HoverLabel("Select Earth Model:", "Modello di calcolo" , ui->widgetModel);
+    _ui->setupUi(this);
+
+    _label = new HoverLabel("Origin:", "Starting point(Longitude,Latitude) of tree's creation.", _ui->widgetOrigin);
+    _label = new HoverLabel("Heading (0 to 360):", "Tree rotation." , _ui->widgetHeading);
+    _label = new HoverLabel("Distance (NM):", "Distance between generation points." , _ui->widgetDistance);
+    _label = new HoverLabel("MSL (m):", "Altitude above sea level." , _ui->widgetMsl);
+    _label = new HoverLabel("Select Earth Model:", "Calculation Model." , _ui->widgetModel);
 
 }
 
 MainWindow::~MainWindow(){
-    delete ui;
+    delete _ui;
 }
 
 void MainWindow::on_calculateButton_clicked(){
 
-    UserInput();
+    _fromUserInputToOutput();
 }
 
-void MainWindow::UserInput(){
+void MainWindow::_fromUserInputToOutput(){
 
     static const Type::PathSpec pathSpec = {
         {1.0, 0.0},
@@ -68,28 +45,29 @@ void MainWindow::UserInput(){
         {1.0, 0.0},
         {0.0, 0.0}
     };
+
     PathCalculatorManager manager(pathSpec);
 
     const bool success = manager.genPath(
-        ui->latitudeBox->text().toDouble(),
-        ui->longitudeBox->text().toDouble(),
-        ui->headingBox->text().toDouble(),
-        ui->distanceBox->text().toDouble(),
-        ui->mslBox->text().toDouble(),
-        ui->modelInput->currentIndex()
+        _ui->latitudeBox->text().toDouble(),
+        _ui->longitudeBox->text().toDouble(),
+        _ui->distanceBox->text().toDouble(),
+        _ui->headingBox->text().toDouble(),
+        _ui->mslBox->text().toDouble(),
+        _ui->modelInput->currentIndex()
     );
 
     if(success)
-        displayResults();
+        _displayResults();
 }
 
-void MainWindow::displayResults() {
+void MainWindow::_displayResults() {
     QMessageBox::information(this, "Success", "Coordinate calcolate e salvate nel file KML.");
 }
 
 void MainWindow::on_onWebButton_clicked()
 {
-    QString htmlFilePath = "https://earth.google.com/web/@45.52015247,9.26697256,130.21959004a,1475.22100893d,30y,-0h,0t,0r/data=CgRCAggBOgMKATBKCAiDhoiXBBAA";
+    QString htmlFilePath = "https://earth.google.com/web";
     QDesktopServices::openUrl(QUrl(htmlFilePath));
 }
 
