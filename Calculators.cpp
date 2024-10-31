@@ -23,8 +23,9 @@ Type::Path FlatEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
             _data.p0.lati  + (_data.d * pathSpec[i].first) * cos(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL,
             _data.p0.longi + (_data.d * pathSpec[i].first) * sin(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL / cos(math::degreeToRadian(_data.p0.lati)),
             _data.msl
-        }; 
+        };
 
+        math::correctLongitude(nextPonit);
         nextPonit.alti = _data.msl;
         out.emplace_back(nextPonit);  
     }
@@ -47,6 +48,7 @@ Type::Path SphericalEarthPathCalculator::eval(const Type::PathSpec& pathSpec) co
         nextPonit.longi = _data.p0.longi + math::radianToDegree(atan2(sin(theta_rad) * sin(hav_rad) * cos(lat_rad) ,
                                                                         cos(hav_rad) - sin(lat_rad) * sin(math::degreeToRadian(nextPonit.lati))));
 
+        math::correctLongitude(nextPonit);
         nextPonit.alti = _data.msl;
         out.emplace_back(nextPonit);
     }
