@@ -29,6 +29,7 @@ set(PROJECT_SOURCES
     Utilities.hpp
     MainWindow.hpp
     mainwindow.ui
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
