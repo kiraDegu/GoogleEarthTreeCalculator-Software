@@ -59,7 +59,7 @@ Type::Path SphericalEarthPathCalculator::eval(const Type::PathSpec& pathSpec) co
         Type::Point nextPonit;
 
         nextPonit.lati = math::radianToDegree(asin(sin(lat_rad) * cos(hav_rad) + cos(lat_rad) * sin(hav_rad) * cos(theta_rad))) ;
-        nextPonit.longi = _data.p0.longi + math::radianToDegree(atan2(sin(theta_rad) * sin(hav_rad) * cos(lat_rad) ,
+        nextPonit.longi = prevPoint.longi + math::radianToDegree(atan2(sin(theta_rad) * sin(hav_rad) * cos(lat_rad) ,
                                                                         cos(hav_rad) - sin(lat_rad) * sin(math::degreeToRadian(nextPonit.lati))));
 
         nextPonit.alti = _data.msl;
