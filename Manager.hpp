@@ -20,8 +20,11 @@ class PathCalculatorManager {
         PathCalculatorManager()=delete;
 
         //! @brief Construct from path specifier and output filename
-        PathCalculatorManager(const Type::PathSpec& pathSpec, const Type::String& fileName = "out.kml")
-        : _pathSpec{pathSpec}, _fileName{fileName} {}
+        PathCalculatorManager(
+            const Type::PathSpec& pathSpec,
+            const Type::String& fileName = "out",
+            bool fromOrigin = false
+        ): _pathSpec{pathSpec}, _fileName{fileName}, _fromOrigin{fromOrigin} {}
 
         /*! @brief Generate output path in kml format
             @param lat0 Latitude of the origin point in deg, from -90° to 90°
@@ -34,8 +37,7 @@ class PathCalculatorManager {
         bool genPath(
             const Type::Scalar& lat0, const Type::Scalar& long0,
             const Type::Scalar& d, const Type::Scalar& theta0,
-            const Type::Scalar& msl, const Type::Model& model,
-            const Type::Methods& methods
+            const Type::Scalar& msl, const Type::Model& model
         ) const;
 
     private:
@@ -43,6 +45,8 @@ class PathCalculatorManager {
         Type::PathSpec _pathSpec;
         //! @brief Save output file name privately
         Type::String _fileName;
+        //! @brief Save calculation method
+        bool _fromOrigin;
 
         /*! @brief Private path calculator factory method
             @param data Input data aggregate

@@ -15,7 +15,7 @@ class KmlInterface {
 
         #ifndef COORDPRECISION
         //! @brief Coordinate Precision, can be changed at compile time
-        static constexpr unsigned int CP = 8u;
+        static constexpr unsigned int CP = 9u;
         #else
         static constexpr unsigned int CP = COORDPRECISION;
         #endif
@@ -42,6 +42,9 @@ class KmlInterface {
             for (const auto& eline: _endOfFile())
                 os << eline << std::endl;
         }
+
+        //! @brief File extention
+        static Type::String extension() { return ".kml"; }
 
     private:
 
@@ -114,7 +117,7 @@ class KmlInterface {
             os << "      <name> Computed Path </name>" << std::endl;
             os << "      <styleUrl>#redline</styleUrl>" << std::endl;
             os << "      <LineString> " << std::endl;
-            os << "        <altitudeMode> absolute </altitudeMode>" << std::endl;
+            os << "        <altitudeMode> relativeToGround </altitudeMode>" << std::endl;
             os << "        <extrude> 1 </extrude>" << std::endl;
             os << "        <tassellate> 1 </tassellate>" << std::endl;
             os << "        <coordinates> " << std::endl;

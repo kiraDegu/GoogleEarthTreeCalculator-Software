@@ -27,8 +27,7 @@ void MainWindow::on_calculateButton_clicked(){
 
 void MainWindow::_fromUserInputToOutput(){
 
-    /*static const Type::PathSpec pathSpec = {
-        {1.0, 0.0},
+    static const Type::PathSpec pathSpecOrigin = {
         {1.0, 90.0},
         {std::sqrt(2.0), 45.0},
         {std::sqrt(5.0), 63.435},
@@ -40,9 +39,9 @@ void MainWindow::_fromUserInputToOutput(){
         {std::sqrt(2.0), -45.0},
         {1.0, 0.0},
         {0.0, 0.0}
-    };*/
+    };
 
-    static const Type::PathSpec pathSpec = {
+    static const Type::PathSpec pathSpecP2P = {
         {1.0, 90.0},
         {1.0, 0.0},
         {1.0, 90.0},
@@ -53,21 +52,29 @@ void MainWindow::_fromUserInputToOutput(){
         {1.0, 90.0},
         {std::sqrt(2), -135.0},
         {1.0, 90.0},
-        {1.0, 180.0},
-        {1.0, 90.0}
+        {1.0, 180.0}
     };
 
-    PathCalculatorManager manager(pathSpec);
+    PathCalculatorManager mP2P(pathSpecP2P, "out_p2p", false),
+                          mOrigin(pathSpecOrigin, "out_origin", true);
 
-    const bool success = manager.genPath(
+    bool success = mP2P.genPath(
         _ui->latitudeBox->text().toDouble(),
         _ui->longitudeBox->text().toDouble(),
         _ui->distanceBox->text().toDouble(),
         _ui->headingBox->text().toDouble(),
         _ui->mslBox->text().toDouble(),
-        _ui->modelInput->currentIndex(),
-        2u
+        _ui->modelInput->currentIndex()
     );
+
+    success = mOrigin.genPath(
+        _ui->latitudeBox->text().toDouble(),
+        _ui->longitudeBox->text().toDouble(),
+        _ui->distanceBox->text().toDouble(),
+        _ui->headingBox->text().toDouble(),
+        _ui->mslBox->text().toDouble(),
+        _ui->modelInput->currentIndex()
+    ) && success;
 
     if(success)
         _displayResults();

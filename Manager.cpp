@@ -5,8 +5,7 @@
 bool PathCalculatorManager::genPath(
     const Type::Scalar& lat0, const Type::Scalar& long0,
     const Type::Scalar& d, const Type::Scalar& theta0,
-    const Type::Scalar& msl, const Type::Model& model,
-    const Type::Methods& methods
+    const Type::Scalar& msl, const Type::Model& model
 ) const {
 
     // Select computational model
@@ -14,54 +13,13 @@ bool PathCalculatorManager::genPath(
     if (!calcPtr) // From GUI this will never be activated
         std::cerr << "In 'genPath': something went wrong when selecting calculation model." << std::endl;
 
-    std::ofstream os(_fileName), osOrigin;
-    switch (methods) {
-    case 0u: {
-        if (os) {
-            KMLI::printPath(os, calcPtr->eval(_pathSpec, false));
-            os.close();
-        } else {
-            os.close();
-            return false;
-        }
-        break;
-    }
-    
-    case 1u: {
-        if (os) {
-            KMLI::printPath(os, calcPtr->eval(_pathSpec, true));
-            os.close();
-        } else {
-            os.close();
-            return false;
-        }
-        break;
-    }
-
-    case 2u: {
-        osOrigin.open(_fileName+"_FO");
-        if (os) {
-            KMLI::printPath(os, calcPtr->eval(_pathSpec, false));
-            os.close();
-        } else {
-            os.close();
-            return false;
-        }
-        if (osOrigin) {
-            KMLI::printPath(osOrigin, calcPtr->eval(_pathSpec, true));
-            osOrigin.close();
-        } else {
-            osOrigin.close();
-            return false;
-        }
-        break;
-    }
-
-    default: {
+    std::ofstream os(_fileName + KMLI::extension());
+    if (os) {
+        KMLI::printPath(os, calcPtr->eval(_pathSpec, _fromOrigin), _fileName);
+        os.close();
+    } else {
+        os.close();
         return false;
-        break;
-    }
-
     }
 
     return true;
