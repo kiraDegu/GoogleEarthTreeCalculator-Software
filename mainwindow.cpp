@@ -53,7 +53,8 @@ void MainWindow::_fromUserInputToOutput(){
         {1.0, 90.0},
         {std::sqrt(2), -135.0},
         {1.0, 90.0},
-        {1.0, 180.0}
+        {1.0, 180.0},
+        {1.0, 90.0}
     };
 
     PathCalculatorManager manager(pathSpec);
