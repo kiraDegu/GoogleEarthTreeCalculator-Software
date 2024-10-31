@@ -2,77 +2,61 @@
 #include "Calculators.hpp"
 #include "Utilities.hpp"
 
-
-// Common output initializer
-Type::Path AbstractPathCalculator::_initOutput(const Type::PathSpec& pathSpec) const {
+Type::Path AbstractPathCalculator::eval(const Type::PathSpec& pathSpec, bool fromOrigin) const {
+    // Initialize output
     Type::Path out;
     out.reserve(pathSpec.size()+1);
     out.emplace_back(_data.p0);
 
+    // Evaluate path according to a path method
+    if (fromOrigin) { // Point by Point
+        Type::Point prev = _data.p0;
+        for (const auto& spec: pathSpec) {
+            prev = this->next(prev, spec);
+            out.emplace_back(prev);
+        }
+
+    } else {          // From Origin
+        for (const auto& spec: pathSpec)
+            out.emplace_back(this->next(_data.p0, spec));
+    }
+
     return out;
 }
 
-// Flat earth model path calculator implementation
-Type::Path FlatEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
-    Type::Path out{this->_initOutput(pathSpec)};
+// Flat earth model point calculator implementation
+Type::Point FlatEarthPathCalculator::next(const Type::Point& prevPoint, const Type::Spec& spec) const {
 
-    static const Type::Scalar NM_TO_LL = 0.01662976;
-    Type::Point prevPoint = _data.p0;
-
-    for (size_t i = 1; i < pathSpec.size(); ++i) {
-        Type::Point nextPonit = { 
-            prevPoint.lati  + (_data.d * pathSpec[i].first) * cos(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL,
-            prevPoint.longi + (_data.d * pathSpec[i].first) * sin(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL / cos(math::degreeToRadian(prevPoint.lati)),
-            _data.msl
-        }; 
-
-        nextPonit.alti = _data.msl;
-        out.emplace_back(nextPonit);  
-
-        prevPoint = nextPonit;
-    }
-
-/*    for (size_t i = 1; i < pathSpec.size(); ++i) {
-        Type::Point nextPonit = { 
-            _data.p0.lati  + (_data.d * pathSpec[i].first) * cos(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL,
-            _data.p0.longi + (_data.d * pathSpec[i].first) * sin(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL / cos(math::degreeToRadian(_data.p0.lati)),
-            _data.msl
-        }; 
-
-        nextPonit.alti = _data.msl;
-        out.emplace_back(nextPonit);  
-    }*/
-
-    return out;
+    return { 
+        prevPoint.lati  + (_data.d * spec.first) * cos(math::degreeToRadian(_data.th + spec.second))*math::NM_TO_LL,
+        prevPoint.longi + (_data.d * spec.first) * sin(math::degreeToRadian(_data.th + spec.second))*math::NM_TO_LL / cos(math::degreeToRadian(prevPoint.lati)),
+        _data.msl
+    }; 
 }
 
 // Spherical earth model path calculator implementation
-Type::Path SphericalEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
-    Type::Path out{this->_initOutput(pathSpec)};
-    Type::Point prevPoint = _data.p0;
+Type::Point SphericalEarthPathCalculator::next(const Type::Point& prevPoint, const Type::Spec& spec) const {
 
-    for (size_t i = 1; i < pathSpec.size(); ++i) {
-        Type::Scalar hav_rad = _data.d * pathSpec[i].first / physics::EARTH_RADIUS_NM;
-        Type::Scalar theta_rad = math::degreeToRadian((_data.th + pathSpec[i].second));
-        Type::Scalar lat_rad = math::degreeToRadian(prevPoint.lati);
+    const Type::Scalar hav_rad{_data.d*spec.first/physics::EARTH_RADIUS_NM};
+    const Type::Scalar theta_rad{math::degreeToRadian((_data.th + spec.second))};
+    const Type::Scalar lat_rad{math::degreeToRadian(prevPoint.lati)};
 
-        Type::Point nextPonit;
+    const Type::Scalar newLati{math::radianToDegree(asin(sin(lat_rad)*cos(hav_rad) + cos(lat_rad)*sin(hav_rad)*cos(theta_rad)))};
+    Type::Point nextPoint{newLati, 0.0, _data.msl};
 
-        nextPonit.lati = math::radianToDegree(asin(sin(lat_rad) * cos(hav_rad) + cos(lat_rad) * sin(hav_rad) * cos(theta_rad))) ;
-        nextPonit.longi = prevPoint.longi + math::radianToDegree(atan2(sin(theta_rad) * sin(hav_rad) * cos(lat_rad) ,
-                                                                        cos(hav_rad) - sin(lat_rad) * sin(math::degreeToRadian(nextPonit.lati))));
+    nextPoint.longi = prevPoint.longi + math::radianToDegree(atan2(sin(theta_rad)*sin(hav_rad)*cos(lat_rad) ,
+                                                                        cos(hav_rad) - sin(lat_rad)*sin(math::degreeToRadian(newLati))));
 
-        nextPonit.alti = _data.msl;
-        out.emplace_back(nextPonit);
-
-        prevPoint = nextPonit;
-    }
-
-    return out;
+    return nextPoint;
 }
 
 
-Type::Path WGS84PathCalculator::eval(const Type::PathSpec& pathSpec) const {
+Type::Point WGS84PathCalculator::next(const Type::Point& prevPoint, const Type::Spec& spec) const {
+    return {0.,0.,0.};
+}
+
+/*
+Type::Path WGS84PathCalculator::eval(const Type::PathSpec& pathSpec, const Type::Methods& methods) const {
     const Type::Scalar a = 6378.137 * 0.5399568; // Raggio equatoriale in NM
     const Type::Scalar f = 1.0 / 298.257223563;  // Appiattimento dell'ellissoide
     const Type::Scalar b = (1.0 - f) * a;        // Raggio polare in NM
@@ -133,3 +117,4 @@ Type::Path WGS84PathCalculator::eval(const Type::PathSpec& pathSpec) const {
     
     return out;
 }
+*/

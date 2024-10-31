@@ -34,7 +34,8 @@ class PathCalculatorManager {
         bool genPath(
             const Type::Scalar& lat0, const Type::Scalar& long0,
             const Type::Scalar& d, const Type::Scalar& theta0,
-            const Type::Scalar& msl, const Type::Model& model
+            const Type::Scalar& msl, const Type::Model& model,
+            const Type::Methods& methods
         ) const;
 
     private:

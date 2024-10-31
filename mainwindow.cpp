@@ -65,7 +65,8 @@ void MainWindow::_fromUserInputToOutput(){
         _ui->distanceBox->text().toDouble(),
         _ui->headingBox->text().toDouble(),
         _ui->mslBox->text().toDouble(),
-        _ui->modelInput->currentIndex()
+        _ui->modelInput->currentIndex(),
+        2u
     );
 
     if(success)

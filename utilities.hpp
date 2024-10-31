@@ -5,6 +5,10 @@
 #include "TypeTraits.hpp"
 
 namespace math {
+
+    //! @brief Nautical Miles to Longitude (or) Latitude
+    constexpr Type::Scalar NM_TO_LL = 0.01662976;
+
     /*! @brief Function to convert degrees to radians
         @param degrees The angle in deg
         @return The conversion in rad
