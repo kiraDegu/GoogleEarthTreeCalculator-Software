@@ -120,7 +120,6 @@ class KmlInterface {
             os << "        <coordinates> " << std::endl;
             for (const auto& point: path)
                 os << "          " << _pointCoordinates(point) << std::endl;
-            os << "          " << _pointCoordinates(path.front()) << std::endl;
             os << "        </coordinates> " << std::endl;
             os << "      </LineString> " << std::endl;
             os << "    </Placemark>" << std::endl;
