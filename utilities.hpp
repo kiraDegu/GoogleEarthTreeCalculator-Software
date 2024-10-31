@@ -17,12 +17,6 @@ namespace math {
         @return The conversion in deg
     */    
     Type::Scalar radianToDegree(Type::Scalar radians);
-
-    /*! @brief Function to correct latitude to maintain values between -180 and 180
-        @param point A point
-    */
-    void correctLongitude(Type::Point& point);
-
 }
 
 namespace physics {
