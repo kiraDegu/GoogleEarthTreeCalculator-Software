@@ -58,7 +58,7 @@ void MainWindow::_fromUserInputToOutput(){
 }
 
 void MainWindow::_displayResults() {
-    QMessageBox::information(this, "Success", "Coordinates calculated and saved in the KML file.");
+    QMessageBox::information(this, "Success!", "Coordinates calculated and saved in the KML file.");
 }
 
 void MainWindow::on_onWebButton_clicked(){
