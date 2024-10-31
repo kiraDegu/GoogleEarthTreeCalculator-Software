@@ -27,7 +27,7 @@ void MainWindow::on_calculateButton_clicked(){
 
 void MainWindow::_fromUserInputToOutput(){
 
-    static const Type::PathSpec pathSpec = {
+    /*static const Type::PathSpec pathSpec = {
         {1.0, 0.0},
         {1.0, 90.0},
         {std::sqrt(2.0), 45.0},
@@ -40,6 +40,20 @@ void MainWindow::_fromUserInputToOutput(){
         {std::sqrt(2.0), -45.0},
         {1.0, 0.0},
         {0.0, 0.0}
+    };*/
+
+    static const Type::PathSpec pathSpec = {
+        {1.0, 90.0},
+        {1,0, 0.0},
+        {1.0, 90.0},
+        {std::sqrt(2), -45.0},
+        {1.0, 90.0},
+        {3/std::sqrt(2), -45.0},
+        {3/std::sqrt(2), -135.0},
+        {1.0, 90.0},
+        {std::sqrt(2), -135.0},
+        {1.0, 90.0},
+        {1,0, 180.0}
     };
 
     PathCalculatorManager manager(pathSpec);

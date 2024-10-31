@@ -17,8 +17,22 @@ Type::Path FlatEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
     Type::Path out{this->_initOutput(pathSpec)};
 
     static const Type::Scalar NM_TO_LL = 0.01662976;
+    Type::Point prevPoint = _data.p0;
 
     for (size_t i = 1; i < pathSpec.size(); ++i) {
+        Type::Point nextPonit = { 
+            prevPoint.lati  + (_data.d * pathSpec[i].first) * cos(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL,
+            prevPoint.longi + (_data.d * pathSpec[i].first) * sin(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL / cos(math::degreeToRadian(prevPoint.lati)),
+            _data.msl
+        }; 
+
+        nextPonit.alti = _data.msl;
+        out.emplace_back(nextPonit);  
+
+        prevPoint = nextPonit;
+    }
+
+/*    for (size_t i = 1; i < pathSpec.size(); ++i) {
         Type::Point nextPonit = { 
             _data.p0.lati  + (_data.d * pathSpec[i].first) * cos(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL,
             _data.p0.longi + (_data.d * pathSpec[i].first) * sin(math::degreeToRadian(_data.th + pathSpec[i].second))*NM_TO_LL / cos(math::degreeToRadian(_data.p0.lati)),
@@ -27,7 +41,7 @@ Type::Path FlatEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
 
         nextPonit.alti = _data.msl;
         out.emplace_back(nextPonit);  
-    }
+    }*/
 
     return out;
 }
@@ -35,11 +49,12 @@ Type::Path FlatEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
 // Spherical earth model path calculator implementation
 Type::Path SphericalEarthPathCalculator::eval(const Type::PathSpec& pathSpec) const {
     Type::Path out{this->_initOutput(pathSpec)};
+    Type::Point prevPoint = _data.p0;
 
     for (size_t i = 1; i < pathSpec.size(); ++i) {
         Type::Scalar hav_rad = _data.d * pathSpec[i].first / physics::EARTH_RADIUS_NM;
         Type::Scalar theta_rad = math::degreeToRadian((_data.th + pathSpec[i].second));
-        Type::Scalar lat_rad = math::degreeToRadian(_data.p0.lati) ;
+        Type::Scalar lat_rad = math::degreeToRadian(prevPoint.lati);
 
         Type::Point nextPonit;
 
@@ -49,6 +64,8 @@ Type::Path SphericalEarthPathCalculator::eval(const Type::PathSpec& pathSpec) co
 
         nextPonit.alti = _data.msl;
         out.emplace_back(nextPonit);
+
+        prevPoint = nextPonit;
     }
 
     return out;
