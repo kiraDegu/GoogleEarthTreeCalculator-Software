@@ -44,16 +44,16 @@ void MainWindow::_fromUserInputToOutput(){
 
     static const Type::PathSpec pathSpec = {
         {1.0, 90.0},
-        {1,0, 0.0},
+        {1.0, 0.0},
         {1.0, 90.0},
-        {std::sqrt(2), -45.0},
+        {std::sqrt(2.0), -45.0},
         {1.0, 90.0},
-        {3/std::sqrt(2), -45.0},
-        {3/std::sqrt(2), -135.0},
+        {3.0/std::sqrt(2.0), -45.0},
+        {3.0/std::sqrt(2.0), -135.0},
         {1.0, 90.0},
         {std::sqrt(2), -135.0},
         {1.0, 90.0},
-        {1,0, 180.0}
+        {1.0, 180.0}
     };
 
     PathCalculatorManager manager(pathSpec);
