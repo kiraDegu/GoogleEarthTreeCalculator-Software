@@ -1,10 +1,12 @@
 #include "MainWindow.hpp"
-#include "ui_MainWindow.h"
+#include "./ui_mainwindow.h"
 #include "Manager.hpp"
+#include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QEnterEvent>
 #include <QToolTip>
+#include <QUrl>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent)
     _labelDistance = new HoverLabel("Distance (NM):", "Distance between generation points." , _ui->widgetDistance);
     _labelMsl = new HoverLabel("MSL (m):", "Altitude above sea level." , _ui->widgetMsl);
     _labelModel = new HoverLabel("Select Earth Model:", "Calculation Model." , _ui->widgetModel);
+    _ui->widgetMsl->hide();
+    _ui->widgetCheckBox->hide();
+    _ui->widgetFileName->hide();
 }
 
 MainWindow::~MainWindow(){
@@ -59,6 +64,14 @@ void MainWindow::_fromUserInputToOutput(){
                           mOrigin(pathSpecOrigin, "out_origin", true);
 
     bool success = mP2P.genPath(
+    //Dati da passare
+    QString urlSafeFileName = QUrl::toPercentEncoding(_ui->lineFileName->text());
+    _ui->checkBox->isChecked();
+    _ui->checkBox_2->isChecked();
+
+
+
+    const bool success = manager.genPath(
         _ui->latitudeBox->text().toDouble(),
         _ui->longitudeBox->text().toDouble(),
         _ui->distanceBox->text().toDouble(),
@@ -89,5 +102,15 @@ void MainWindow::on_onWebButton_clicked(){
     QDesktopServices::openUrl(QUrl(htmlFilePath));
 }
 
-
+void MainWindow::on_checkBox_3_toggled(bool checked){
+    if (checked) {
+        _ui->widgetMsl->show();
+        _ui->widgetCheckBox->show();
+        _ui->widgetFileName->show();
+    } else {
+        _ui->widgetMsl->hide();
+        _ui->widgetCheckBox->hide();
+        _ui->widgetFileName->hide();
+    }
+}
 

@@ -22,6 +22,8 @@ private slots:
     void on_calculateButton_clicked();
     void on_onWebButton_clicked();
 
+    void on_checkBox_3_toggled(bool checked);
+
 private:
     Ui::MainWindow *_ui;
     HoverLabel *_labelOrigin;
