@@ -8,18 +8,23 @@
 #include <QToolTip>
 #include <QUrl>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , _ui(new Ui::MainWindow){
     _ui->setupUi(this);
-    _labelOrigin = new HoverLabel("Origin:", "Starting point(Longitude,Latitude) of tree's creation.", _ui->widgetOrigin);
-    _labelHeading = new HoverLabel("Heading (0 to 360):", "Tree rotation." , _ui->widgetHeading);
-    _labelDistance = new HoverLabel("Distance (NM):", "Distance between generation points." , _ui->widgetDistance);
-    _labelMsl = new HoverLabel("MSL (m):", "Altitude above sea level." , _ui->widgetMsl);
-    _labelModel = new HoverLabel("Select Earth Model:", "Calculation Model." , _ui->widgetModel);
-    _ui->widgetMsl->hide();
-    _ui->widgetCheckBox->hide();
-    _ui->widgetFileName->hide();
+
+    //Create Hoverlabel
+    _labelOrigin = new HoverLabel("<b>Origin:</b>", "Starting point(Longitude,Latitude) of tree's creation.", _ui->widgetOrigin);
+    _labelHeading = new HoverLabel("<b>Heading (0 to 360):</b>", "Tree rotation." , _ui->widgetHeading);
+    _labelDistance = new HoverLabel("<b>Distance (NM):</b>", "Distance between generation points." , _ui->widgetDistance);
+    _labelMsl = new HoverLabel("<b>MSL (m):</b>", "Altitude above sea level." , _ui->widgetMsl);
+    _labelModel = new HoverLabel("<b>Select Earth Model:</b>", "Calculation Model." , _ui->widgetModel);
+
+    //set Advanced Settings disabled
+    _ui->widgetMsl->setEnabled(false);
+    _ui->widgetCheckBox->setEnabled(false);
+    _ui->widgetFileName->setEnabled(false);
 }
 
 MainWindow::~MainWindow(){
@@ -32,6 +37,7 @@ void MainWindow::on_calculateButton_clicked(){
 
 void MainWindow::_fromUserInputToOutput(){
 
+    //Path to calculate points from the origin
     static const Type::PathSpec pathSpecOrigin = {
         {1.0, 90.0},
         {std::sqrt(2.0), 45.0},
@@ -46,6 +52,7 @@ void MainWindow::_fromUserInputToOutput(){
         {0.0, 0.0}
     };
 
+    //Path to calculate points from the previuos point
     static const Type::PathSpec pathSpecP2P = {
         {1.0, 90.0},
         {1.0, 0.0},
@@ -60,34 +67,44 @@ void MainWindow::_fromUserInputToOutput(){
         {1.0, 180.0}
     };
 
-    //Dati da passare
+    //Set correct Latitude in Flat and Spheric
+    Type::Model model = _ui->modelInput->currentIndex();
+    Type::Scalar latitude = _ui->latitudeBox->text().toDouble();
+    if(std::abs (latitude) == 90 && model != 2u){
+        latitude = latitude * 0.9999999999888889;
+    }
+
+    //Take file name from the GUI
     QString urlSafeFileName = QUrl::toPercentEncoding(_ui->lineFileName->text());
     bool success = true;
 
+    //Send GUI input to "point to point path calculator"
     if (_ui->checkBox->isChecked()) {
         PathCalculatorManager manager(pathSpecP2P, urlSafeFileName.toStdString()+"_p2p", false);
         success = manager.genPath(
-            _ui->latitudeBox->text().toDouble(),
+            latitude,
             _ui->longitudeBox->text().toDouble(),
             _ui->distanceBox->text().toDouble(),
             _ui->headingBox->text().toDouble(),
             _ui->mslBox->text().toDouble(),
-            _ui->modelInput->currentIndex()
+            model
         );
     }
 
+    //Send GUI input to "from origin calculator"
     if (_ui->checkBox_2->isChecked()) {
         PathCalculatorManager manager(pathSpecOrigin, urlSafeFileName.toStdString()+"_fo", true);
         success = manager.genPath(
-            _ui->latitudeBox->text().toDouble(),
+            latitude,
             _ui->longitudeBox->text().toDouble(),
             _ui->distanceBox->text().toDouble(),
             _ui->headingBox->text().toDouble(),
             _ui->mslBox->text().toDouble(),
-            _ui->modelInput->currentIndex()
+            model
         ) && success;
     }
 
+    //Display messagges
     if(success)
         _displayResults();
     else
@@ -108,15 +125,16 @@ void MainWindow::on_onWebButton_clicked(){
     QDesktopServices::openUrl(QUrl(htmlFilePath));
 }
 
+//Enable and Disable advanced settings
 void MainWindow::on_checkBox_3_toggled(bool checked){
     if (checked) {
-        _ui->widgetMsl->show();
-        _ui->widgetCheckBox->show();
-        _ui->widgetFileName->show();
+        _ui->widgetMsl->setEnabled(true);
+        _ui->widgetCheckBox->setEnabled(true);
+        _ui->widgetFileName->setEnabled(true);
     } else {
-        _ui->widgetMsl->hide();
-        _ui->widgetCheckBox->hide();
-        _ui->widgetFileName->hide();
+        _ui->widgetMsl->setEnabled(false);
+        _ui->widgetCheckBox->setEnabled(false);
+        _ui->widgetFileName->setEnabled(false);
     }
 }
 
