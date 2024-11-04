@@ -33,5 +33,6 @@ private:
     HoverLabel *_labelModel;
     void _fromUserInputToOutput();
     void _displayResults();
+    void _displayResultsN();
 };
 #endif // MAINWINDOW_H

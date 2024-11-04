@@ -60,41 +60,47 @@ void MainWindow::_fromUserInputToOutput(){
         {1.0, 180.0}
     };
 
-    PathCalculatorManager mP2P(pathSpecP2P, "out_p2p", false),
-                          mOrigin(pathSpecOrigin, "out_origin", true);
-
-    bool success = mP2P.genPath(
     //Dati da passare
     QString urlSafeFileName = QUrl::toPercentEncoding(_ui->lineFileName->text());
-    _ui->checkBox->isChecked();
-    _ui->checkBox_2->isChecked();
+    bool success = true;
 
+    if (_ui->checkBox->isChecked()) {
+        PathCalculatorManager manager(pathSpecP2P, urlSafeFileName.toStdString()+"_p2p", false);
+        success = manager.genPath(
+            _ui->latitudeBox->text().toDouble(),
+            _ui->longitudeBox->text().toDouble(),
+            _ui->distanceBox->text().toDouble(),
+            _ui->headingBox->text().toDouble(),
+            _ui->mslBox->text().toDouble(),
+            _ui->modelInput->currentIndex()
+        );
+    }
 
-
-    const bool success = manager.genPath(
-        _ui->latitudeBox->text().toDouble(),
-        _ui->longitudeBox->text().toDouble(),
-        _ui->distanceBox->text().toDouble(),
-        _ui->headingBox->text().toDouble(),
-        _ui->mslBox->text().toDouble(),
-        _ui->modelInput->currentIndex()
-    );
-
-    success = mOrigin.genPath(
-        _ui->latitudeBox->text().toDouble(),
-        _ui->longitudeBox->text().toDouble(),
-        _ui->distanceBox->text().toDouble(),
-        _ui->headingBox->text().toDouble(),
-        _ui->mslBox->text().toDouble(),
-        _ui->modelInput->currentIndex()
-    ) && success;
+    if (_ui->checkBox_2->isChecked()) {
+        PathCalculatorManager manager(pathSpecOrigin, urlSafeFileName.toStdString()+"_fo", true);
+        success = manager.genPath(
+            _ui->latitudeBox->text().toDouble(),
+            _ui->longitudeBox->text().toDouble(),
+            _ui->distanceBox->text().toDouble(),
+            _ui->headingBox->text().toDouble(),
+            _ui->mslBox->text().toDouble(),
+            _ui->modelInput->currentIndex()
+        ) && success;
+    }
 
     if(success)
         _displayResults();
+    else
+        _displayResultsN();
+
 }
 
 void MainWindow::_displayResults() {
     QMessageBox::information(this, "Success!", "Coordinates calculated and saved in the KML file.");
+}
+
+void MainWindow::_displayResultsN() {
+    QMessageBox::information(this, "Error!", "Something went wrong while writing KML file.");
 }
 
 void MainWindow::on_onWebButton_clicked(){
