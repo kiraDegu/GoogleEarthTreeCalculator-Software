@@ -8,7 +8,7 @@ class HoverLabel : public QLabel {
     Q_OBJECT
 
 public:
-    HoverLabel(const QString &text, const QString &message ,QWidget *parent = nullptr);
+    HoverLabel(const QString &text, const QString &message, QWidget *parent = nullptr);
 
 protected:
     void enterEvent(QEnterEvent *event) override;
