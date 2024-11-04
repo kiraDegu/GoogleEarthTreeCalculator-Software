@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QMessageBox>
 
+// Subclass of QLabel that override enter and leave events to spawn a QToolTip in the mouse location
 class HoverLabel : public QLabel {
     Q_OBJECT
 
