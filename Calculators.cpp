@@ -55,8 +55,8 @@ Type::Point WGS84PathCalculator::next(const Type::Point& prevPoint, const Type::
  
     // Vincenty's formulae constants
     static constexpr Type::Scalar a = 6378137.0; // Semi-major axis of the Earth (meters)
-    static constexpr Type::Scalar f = 1 / 298.257223563; // Flattening
-    static constexpr Type::Scalar b = (1 - f) * a; // Semi-minor axis
+    static constexpr Type::Scalar f = 1. / 298.257223563; // Flattening
+    static constexpr Type::Scalar b = (1. - f) * a; // Semi-minor axis
     Type::Point nextPoint;
  
     const Type::Scalar distance = _data.d * spec.first * 1852; // Distance in nautical meters
@@ -69,8 +69,11 @@ Type::Point WGS84PathCalculator::next(const Type::Point& prevPoint, const Type::
     const Type::Scalar sinAlpha = cos(U1)*sin(azimuth);
     const Type::Scalar cos2Alpha = (1-sinAlpha)*(1+sinAlpha);
     const Type::Scalar u2 = cos2Alpha*((a*a - b*b)/(b*b));
-    const Type::Scalar A = 1. + ((u2)/16384.) * (4096. + u2*(-768.+u2*(320.-175.*u2)));
-    const Type::Scalar B = ((u2)/1024.) * (256. + u2*(-128.+u2*(74.-47.*u2)));
+    const Type::Scalar k1 = (std::sqrt(1.+u2)-1.)/(std::sqrt(1.+u2)+1.);
+    const Type::Scalar A = (1+0.25*k1*k1)/(1-k1);
+    const Type::Scalar B = k1*(1-0.375*k1*k1);
+    //const Type::Scalar A = 1. + ((u2)/16384.) * (4096. + u2*(-768.+u2*(320.-175.*u2)));
+    //const Type::Scalar B = ((u2)/1024.) * (256. + u2*(-128.+u2*(74.-47.*u2)));
  
     Type::Scalar sigmaNew = distance/(b*A);
     Type::Scalar sigma;
@@ -78,15 +81,15 @@ Type::Point WGS84PathCalculator::next(const Type::Point& prevPoint, const Type::
     do {
         sigma = sigmaNew;
         twoSigma_m = 2*sigma1 + sigma;
-        Type::Scalar deltaSigma = B*sin(sigma)*(cos(twoSigma_m)+(0.25)*B*(cos(sigma)*(-1+2*cos(twoSigma_m)*cos(twoSigma_m))-(1./6.)*B*cos(twoSigma_m)*(-3.+4.*sin(sigma)*sin(sigma))*(-3.+4.*cos(twoSigma_m)*cos(twoSigma_m))));
+        const Type::Scalar deltaSigma = B*sin(sigma)*(cos(twoSigma_m)+(0.25)*B*(cos(sigma)*(-1.+2.*cos(twoSigma_m)*cos(twoSigma_m))-(1./6.)*B*cos(twoSigma_m)*(-3.+4.*sin(sigma)*sin(sigma))*(-3.+4.*cos(twoSigma_m)*cos(twoSigma_m))));
         sigmaNew = (distance/(b*A)) + deltaSigma;
     } while (std::abs(sigmaNew - sigma) > 1e-13); // Convergence check
  
-    nextPoint.lati = math::radianToDegree( atan2(sin(U1)*cos(sigma)+cos(U1)*sin(sigma)*cos(azimuth), (1-f)*sqrt(sin(azimuth)*sin(azimuth)+pow(sin(U1)*sin(sigma)-cos(U1)*cos(sigma)*cos(azimuth),2))) );
+    nextPoint.lati = math::radianToDegree( atan2(sin(U1)*cos(sigma)+cos(U1)*sin(sigma)*cos(azimuth), (1.-f)*sqrt(sin(azimuth)*sin(azimuth)+pow(sin(U1)*sin(sigma)-cos(U1)*cos(sigma)*cos(azimuth),2))) );
     const Type::Scalar lambda = atan2(sin(sigma)*sin(azimuth), cos(U1)*cos(sigma)-sin(U1)*sin(sigma)*cos(azimuth));
     const Type::Scalar C = (f/16.)*cos2Alpha*(4.+f*(4.-3.*cos2Alpha));
     const Type::Scalar L = lambda - (1.-C)*f*sinAlpha*(sigma+C*sin(sigma)*(cos(twoSigma_m)+C*cos(sigma)*(-1.+2.*twoSigma_m*twoSigma_m)));
-    nextPoint.longi = math::radianToDegree( _data.p0.longi + L );
+    nextPoint.longi =  prevPoint.longi + math::radianToDegree(L);
     nextPoint.alti = _data.msl;
 
     return nextPoint;
