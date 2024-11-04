@@ -14,11 +14,19 @@ SRCS := Calculators.cpp Manager.cpp utilities.cpp $(MAIN)
 HEADS := TypeTraits.hpp KmlInterface.hpp Data.hpp Calculator.hpp Manager.hpp utilities.hpp
 OBJS := $(patsubst %.cpp, $(OBJDIR)/%.o, $(SRCS))
 
+.PHONY: clean distclean
+
 $(EXEC): $(OBJS)
 	$(CXX) $^ -o $@
 
+clean:
+	@rm $(OBJS)
+
+distclean: clean
+	@rmdir $(OBJDIR)
+	@rm $(EXEC)
 
 # Pattern rules
-$(OBJDIR)/%.o: %.cpp $(HEADS)
+$(OBJDIR)/%.o: %.cpp
 	@if not exist $(OBJDIR) mkdir $(OBJDIR)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@

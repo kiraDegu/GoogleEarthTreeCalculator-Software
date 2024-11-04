@@ -32,11 +32,11 @@ class KmlInterface {
             for (const auto& hline: _headerLines(docName))
                 os << hline << std::endl;
 
-            // Print point placemarks
-            _addPoints(os, path);
-
             // Print line path placemark
             _addLines(os, path);
+
+            // Print point placemarks
+            _addPoints(os, path);
 
             // End of file
             for (const auto& eline: _endOfFile())

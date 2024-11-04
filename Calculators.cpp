@@ -5,8 +5,8 @@
 Type::Path AbstractPathCalculator::eval(const Type::PathSpec& pathSpec, bool fromOrigin) const {
     // Initialize output
     Type::Path out;
-    out.reserve(pathSpec.size()+1);
-    out.emplace_back(_data.p0);
+    out.reserve(pathSpec.size() + 1u); // Reserve one more than the path spec to add origin point
+    out.emplace_back(_data.p0);        // Add origin point
 
     // Evaluate path according to a path method
     if (fromOrigin) { // From Origin
@@ -26,10 +26,11 @@ Type::Path AbstractPathCalculator::eval(const Type::PathSpec& pathSpec, bool fro
 
 // Flat earth model point calculator implementation
 Type::Point FlatEarthPathCalculator::next(const Type::Point& prevPoint, const Type::Spec& spec) const {
+    const Type::Scalar tmpLongi = prevPoint.longi + (_data.d * spec.first) * sin(math::degreeToRadian(_data.th + spec.second))*math::NM_TO_LL / cos(math::degreeToRadian(prevPoint.lati));
 
     return { 
         prevPoint.lati  + (_data.d * spec.first) * cos(math::degreeToRadian(_data.th + spec.second))*math::NM_TO_LL,
-        prevPoint.longi + (_data.d * spec.first) * sin(math::degreeToRadian(_data.th + spec.second))*math::NM_TO_LL / cos(math::degreeToRadian(prevPoint.lati)),
+        std::fmod(tmpLongi, 180.) + 180.,
         _data.msl
     }; 
 }
@@ -45,7 +46,7 @@ Type::Point SphericalEarthPathCalculator::next(const Type::Point& prevPoint, con
     Type::Point nextPoint{newLati, 0.0, _data.msl};
 
     nextPoint.longi = prevPoint.longi + math::radianToDegree(atan2(sin(theta_rad)*sin(hav_rad)*cos(lat_rad) ,
-                                                                        cos(hav_rad) - sin(lat_rad)*sin(math::degreeToRadian(newLati))));
+                                                             cos(hav_rad) - sin(lat_rad)*sin(math::degreeToRadian(newLati))));
 
     return nextPoint;
 }
@@ -85,10 +86,10 @@ Type::Point WGS84PathCalculator::next(const Type::Point& prevPoint, const Type::
         sigmaNew = (distance/(b*A)) + deltaSigma;
     } while (std::abs(sigmaNew - sigma) > 1e-13); // Convergence check
  
-    nextPoint.lati = math::radianToDegree( atan2(sin(U1)*cos(sigma)+cos(U1)*sin(sigma)*cos(azimuth), (1.-f)*sqrt(sin(azimuth)*sin(azimuth)+pow(sin(U1)*sin(sigma)-cos(U1)*cos(sigma)*cos(azimuth),2))) );
+    nextPoint.lati = math::radianToDegree( atan2(sin(U1)*cos(sigma)+cos(U1)*sin(sigma)*cos(azimuth), (1.-f)*sqrt(sinAlpha*sinAlpha+pow(sin(U1)*sin(sigma)-cos(U1)*cos(sigma)*cos(azimuth),2))) );
     const Type::Scalar lambda = atan2(sin(sigma)*sin(azimuth), cos(U1)*cos(sigma)-sin(U1)*sin(sigma)*cos(azimuth));
     const Type::Scalar C = (f/16.)*cos2Alpha*(4.+f*(4.-3.*cos2Alpha));
-    const Type::Scalar L = lambda - (1.-C)*f*sinAlpha*(sigma+C*sin(sigma)*(cos(twoSigma_m)+C*cos(sigma)*(-1.+2.*twoSigma_m*twoSigma_m)));
+    const Type::Scalar L = lambda - (1.-C)*f*sinAlpha*(sigma+C*sin(sigma)*(cos(twoSigma_m)+C*cos(sigma)*(-1.+2.*cos(twoSigma_m)*cos(twoSigma_m))));
     nextPoint.longi =  prevPoint.longi + math::radianToDegree(L);
     nextPoint.alti = _data.msl;
 
