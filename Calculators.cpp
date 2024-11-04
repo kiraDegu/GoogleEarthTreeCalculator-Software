@@ -26,11 +26,10 @@ Type::Path AbstractPathCalculator::eval(const Type::PathSpec& pathSpec, bool fro
 
 // Flat earth model point calculator implementation
 Type::Point FlatEarthPathCalculator::next(const Type::Point& prevPoint, const Type::Spec& spec) const {
-    const Type::Scalar tmpLongi = prevPoint.longi + (_data.d * spec.first) * sin(math::degreeToRadian(_data.th + spec.second))*math::NM_TO_LL / cos(math::degreeToRadian(prevPoint.lati));
-
+    
     return { 
         prevPoint.lati  + (_data.d * spec.first) * cos(math::degreeToRadian(_data.th + spec.second))*math::NM_TO_LL,
-        std::fmod(tmpLongi, 180.) + 180.,
+        prevPoint.longi + (_data.d * spec.first) * sin(math::degreeToRadian(_data.th + spec.second))*math::NM_TO_LL / cos(math::degreeToRadian(prevPoint.lati)),
         _data.msl
     }; 
 }
