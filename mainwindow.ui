@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
-    <height>556</height>
+    <width>460</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,6 +15,18 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>460</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>460</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="baseSize">
    <size>
@@ -87,6 +99,11 @@
          <height>20</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Longitude (-180 to 180):</string>
        </property>
@@ -158,6 +175,19 @@
      </widget>
     </item>
     <item>
+     <spacer name="horizontalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>15</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
      <widget class="QWidget" name="widgetHeading" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -184,6 +214,19 @@
      </widget>
     </item>
     <item>
+     <spacer name="horizontalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>15</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
      <widget class="QWidget" name="widgetDistance" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -203,11 +246,30 @@
        <property name="decimals">
         <number>9</number>
        </property>
+       <property name="minimum">
+        <double>1.000000000000000</double>
+       </property>
        <property name="maximum">
-        <double>10000.000000000000000</double>
+        <double>2000.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>10.000000000000000</double>
        </property>
       </widget>
      </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_5">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>15</height>
+       </size>
+      </property>
+     </spacer>
     </item>
     <item>
      <widget class="QWidget" name="widgetModel" native="true">
@@ -245,7 +307,7 @@
      </widget>
     </item>
     <item>
-     <spacer name="horizontalSpacer">
+     <spacer name="horizontalSpacer_6">
       <property name="orientation">
        <enum>Qt::Orientation::Horizontal</enum>
       </property>
@@ -289,8 +351,24 @@
        <property name="checked">
         <bool>false</bool>
        </property>
+       <property name="tristate">
+        <bool>false</bool>
+       </property>
       </widget>
      </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_7">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>10</height>
+       </size>
+      </property>
+     </spacer>
     </item>
     <item>
      <widget class="QWidget" name="widgetMsl" native="true">
@@ -304,6 +382,9 @@
        </sizepolicy>
       </property>
       <widget class="QDoubleSpinBox" name="mslBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -316,7 +397,7 @@
         <number>2</number>
        </property>
        <property name="maximum">
-        <double>100000.000000000000000</double>
+        <double>1000000.000000000000000</double>
        </property>
        <property name="value">
         <double>5000.000000000000000</double>
@@ -326,6 +407,9 @@
     </item>
     <item>
      <widget class="QWidget" name="widgetFileName" native="true">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <widget class="QLineEdit" name="lineFileName">
        <property name="geometry">
         <rect>
@@ -347,6 +431,11 @@
          <width>91</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="text">
         <string>File Name:</string>
@@ -372,6 +461,9 @@
        </size>
       </property>
       <widget class="QCheckBox" name="checkBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>0</x>
