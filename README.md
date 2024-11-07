@@ -2,6 +2,19 @@
 
 This project was developed in C++ with a graphical interface built on the Qt Framework. The software calculates and visualizes a "Christmas tree" shape on Earth's surface in Google Earth, using a user-defined starting point.
 
+<picture>
+  <source
+    srcset="https://github.com/kiraDegu/FoodDeliveryApp/blob/dev/README-imgs/6.png"
+    media="(prefers-color-scheme: dark)"
+  />
+  <source
+    srcset="https://github.com/kiraDegu/FoodDeliveryApp/blob/dev/README-imgs/6.png"
+    media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
+  />
+  <img src="https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true" />
+</picture>
+
+
 ## Project Description
 
 The goal of this program is to calculate a sequence of points on Earth's surface, beginning from an origin point and drawing a path in the shape of a Christmas tree. The software exports the points into a `.kml` file, which can be viewed in Google Earth to display the calculated path.
@@ -13,6 +26,18 @@ The goal of this program is to calculate a sequence of points on Earth's surface
   - Angle relative to North (heading)
   - Distance between points
   - Number of points needed to draw the Christmas tree shape
+ 
+    <picture>
+  <source
+    srcset="https://github.com/kiraDegu/FoodDeliveryApp/blob/dev/README-imgs/6.png"
+    media="(prefers-color-scheme: dark)"
+  />
+  <source
+    srcset="https://github.com/kiraDegu/FoodDeliveryApp/blob/dev/README-imgs/6.png"
+    media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
+  />
+  <img src="https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true" />
+</picture>
 
 - **Earth Calculation Models**: Choose among different models to represent the Earth's surface:
   - Flat Earth model
