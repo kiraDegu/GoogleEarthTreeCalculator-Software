@@ -4,11 +4,11 @@ This project was developed in C++ with a graphical interface built on the Qt Fra
 
 <picture>
   <source
-    srcset="https://github.com/kiraDegu/FoodDeliveryApp/blob/dev/README-imgs/6.png"
+    srcset="https://github.com/kiraDegu/GoogleEarthTreeCalculator-Software/blob/main/README-imgs/Screenshot%202024-11-07%20174755.png"
     media="(prefers-color-scheme: dark)"
   />
   <source
-    srcset="https://github.com/kiraDegu/FoodDeliveryApp/blob/dev/README-imgs/6.png"
+    srcset="https://github.com/kiraDegu/GoogleEarthTreeCalculator-Software/blob/main/README-imgs/Screenshot%202024-11-07%20174755.png"
     media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
   />
   <img src="https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true" />
@@ -27,13 +27,13 @@ The goal of this program is to calculate a sequence of points on Earth's surface
   - Distance between points
   - Number of points needed to draw the Christmas tree shape
  
-    <picture>
+<picture>
   <source
-    srcset="https://github.com/kiraDegu/FoodDeliveryApp/blob/dev/README-imgs/6.png"
+    srcset="https://github.com/kiraDegu/GoogleEarthTreeCalculator-Software/blob/main/README-imgs/Screenshot%202024-11-07%20174755.png"
     media="(prefers-color-scheme: dark)"
   />
   <source
-    srcset="https://github.com/kiraDegu/FoodDeliveryApp/blob/dev/README-imgs/6.png"
+    srcset="https://github.com/kiraDegu/GoogleEarthTreeCalculator-Software/blob/main/README-imgs/Screenshot%202024-11-07%20174755.png"
     media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
   />
   <img src="https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true" />
